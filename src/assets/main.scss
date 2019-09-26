@@ -1,0 +1,13 @@
+$primary: #ff0028;
+$font-family-primary: "Open Sans";
+$font-family-secondary: "Merriweather";
+
+@import "~bulma/bulma";
+
+.card{
+  margin: 1em;
+}
+
+.card-content{
+  padding: 1em;
+}

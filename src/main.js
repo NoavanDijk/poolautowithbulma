@@ -3,6 +3,14 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
+require("./assets/main.scss");
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')
+
+
+
+// <figure is-fullwidth>
+//   <img src="./assets/images/valleyachtergrond.jpg">
+// </figure>
