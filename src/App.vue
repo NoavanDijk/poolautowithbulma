@@ -36,7 +36,7 @@
     <div class="tile is-ancestor">
       <div class="tile is-8 is-vertical">
         <div class="tile">
-
+          <!-- Reserveringen tile -->
           <div class="tile is-vertical is-parent">
             <div class="tile is-child box">
               <p class="title">Reserveringen</p>
@@ -78,7 +78,7 @@
                 </div>
               </div>
             </div>
-
+            <!-- Auto reserveren tile -->
             <div class="tile is-child box">
               <p class="title">
                 Auto reserveren
@@ -107,12 +107,10 @@
             <div class="level-left">
             </div>
           </div>
-
         </div>
       </div>
 
     </div>
-
   </div>
 
 <!-- Modal when you make a reservation -->
@@ -140,7 +138,8 @@
     </div>
   </div>
 
-  <div class="modal js-modaleditinformation" v-for="(item, inde) in items" :class="{ 'is-active': activeModalId === 'modal-editinformation' }">
+<!-- Modal when you want to edit the reservation-->
+  <div class="modal js-modaleditinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-editinformation' }">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -151,13 +150,13 @@
         <div class="column is-vcentered boxinfo">
           <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
-              <input class="input" type="date" v-html="item.begindatum" v-model="begindatum">
+              <input class="input" type="date" v-model="item.begindatum">
             <label class="label">Eind datum</label>
-              <input class="input" type="date" v-html="item.einddatum" v-model="einddatum">
+              <input class="input" type="date" v-model="item.einddatum">
             <label class="label">Begin tijd</label>
-              <input class="input" type="time" v-html="item.begintijd" v-model="beginTijd">
+              <input class="input" type="time" v-model="item.beginTijd">
             <label class="label">Eind tijd</label>
-              <input class="input" type="time" v-html="item.eindtijd" v-model="eindTijd">
+              <input class="input" type="time" v-model="item.eindTijd">
           </div>
 
           <div class="column is-half infodata">
@@ -185,6 +184,7 @@
     </div>
   </div>
 
+<!-- When you click on the reservation to see the data -->
   <div class="modal js-modalinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-information' }">
     <div class="modal-background"></div>
     <div class="modal-card modalcard">
@@ -229,7 +229,6 @@
           </div>
         </div>
 
-
       </section>
       <footer class="modal-card-foot">
         <button class="button is-primary"v-on:click="onClickEditReservation">Bewerken</button>
@@ -238,6 +237,7 @@
     </div>
   </div>
 
+<!-- Confirmation delete reservation -->
   <div class="modal js-modalconfirmdelete" :class="{ 'is-active': activeModalId === 'modal-delete' }">
     <div class="modal-background"></div>
     <div class="modal-card">
@@ -404,7 +404,6 @@ export default {
           this.items.splice(index, 1);
         }
       });
-
       return;
     },
 
@@ -417,7 +416,6 @@ export default {
 
      $navbarBurgers.forEach( el => {
        el.addEventListener('click', () => {
-
          // Get the target from the "data-target" attribute
          const target = el.dataset.target;
          const $target = document.getElementById(target);
