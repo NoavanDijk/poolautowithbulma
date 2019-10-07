@@ -47,27 +47,27 @@
                     <p class="subtitle is-5"><span v-html="item.id"></span>: &ensp;</p>
                   </div>
                   <div class="level-item">
-                    <p class="subtitle is-5" v-html="item.begindatum"></p>
+                    <p class="subtitle is-5" v-html="item.startdate"></p>
                   </div>
                   <div class="level-item">
                     <p> - </p>
                   </div>
                   <div class="level-item">
-                    <p class="subtitle is-5" v-html="item.einddatum"></p>
+                    <p class="subtitle is-5" v-html="item.enddate"></p>
                   </div>
                   <div class="level-item">
-                    <p class="subtitle is-5">| &ensp;<span v-html="item.beginTijd"></span></p>
+                    <p class="subtitle is-5">| &ensp;<span v-html="item.startTime"></span></p>
                   </div>
                   <div class="level-item">
                     <p> - </p>
                   </div>
                   <div class="level-item">
-                    <p class="subtitle is-5" v-html="item.eindTijd"></p>
+                    <p class="subtitle is-5" v-html="item.endTime"></p>
                   </div>
                 </div>
                 <div class="level-right">
                   <div class="level-item">
-                    <p class="subtitle is-5"><span v-html="reserveringProgress"></span>%</p>
+                    <p class="subtitle is-5"><span v-html="reservationProgress"></span>%</p>
                   </div>
                   <div class="level-item" v-on:click="onClickEditReservation">
                     <i class="fas fa-edit"></i>
@@ -85,16 +85,16 @@
               </p>
               <form class="formreservation">
                 <label class="label">Begin datum</label>
-                  <input class="input" type="date" v-model="begindatum">
+                  <input class="input" type="date" v-model="startdate">
                 <label class="label">Eind datum</label>
-                  <input class="input" type="date" v-model="einddatum">
+                  <input class="input" type="date" v-model="enddate">
                 <label class="label">Begin tijd</label>
-                  <input class="input" type="time" v-model="beginTijd">
+                  <input class="input" type="time" v-model="startTime">
                 <label class="label">Eind tijd</label>
-                  <input class="input" type="time" v-model="eindTijd">
+                  <input class="input" type="time" v-model="endTime">
               </form>
 
-              <button class="button is-primary is-normal reserveer" :disabled="reserveerbuttonIsDisabled" v-on:click="onClickReservateButton">Reserveer</button>
+              <button class="button is-primary is-normal reserveer" :disabled="reservatebuttonIsDisabled" v-on:click="onClickReservateButton">Reserveer</button>
             </div>
           </div>
         </div>
@@ -123,13 +123,13 @@
       </header>
       <section class="modal-card-body">
         <label class="label">Begin datum</label>
-        <p class="subtitle is-5 dateinfo"></p>
+        <p class="subtitle is-5 dateinformation"></p>
         <label class="label">Eind datum</label>
-        <p class="subtitle is-5 dateinfo2"></p>
+        <p class="subtitle is-5 dateinformation2"></p>
         <label class="label">Begin tijd</label>
-        <p class="subtitle is-5" v-html="beginTijd"></p>
+        <p class="subtitle is-5" v-html="startTime"></p>
         <label class="label">Eind tijd</label>
-        <p class="subtitle is-5" v-html="eindTijd"></p>
+        <p class="subtitle is-5" v-html="endTime"></p>
       </section>
       <footer class="modal-card-foot">
         <button class="button is-primary" v-on:click="onClickConfirmButton">Bevestigen</button>
@@ -150,35 +150,35 @@
         <div class="column is-vcentered boxinfo">
           <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
-              <input class="input" type="date" v-model="begindatum">
+              <input class="input" type="date" v-model="startdate">
             <label class="label">Eind datum</label>
-              <input class="input" type="date" v-model="einddatum">
+              <input class="input" type="date" v-model="enddate">
             <label class="label">Begin tijd</label>
-              <input class="input" type="time" v-model="beginTijd">
+              <input class="input" type="time" v-model="startTime">
             <label class="label">Eind tijd</label>
-              <input class="input" type="time" v-model="eindTijd">
+              <input class="input" type="time" v-model="endTime">
           </div>
 
           <div class="column is-half infodata">
             <label class="label">Kilometers begin</label>
-            <input class="input" type="number" placeholder="10" v-model="kmbegin">
+            <input class="input" type="number" placeholder="10" v-model="kmstart">
 
             <label class="label">Kilometers eind</label>
-            <input class="input" type="number" placeholder="20" v-model="kmeind">
+            <input class="input" type="number" placeholder="20" v-model="kmend">
 
             <label class="label">Postcode vertrek</label>
-            <input class="input" type="text" placeholder="1234 AB" v-model="postcodevertrek">
+            <input class="input" type="text" placeholder="1234 AB" v-model="zipcodedeparture">
 
             <label class="label">Postcode bestemming</label>
-            <input class="input" type="text" placeholder="1234 AB" v-model="postcodebestemming">
+            <input class="input" type="text" placeholder="1234 AB" v-model="zipcodedestination">
 
             <label class="label">Omschrijving/klant</label>
-            <textarea class="textarea" v-model="beschrijving"></textarea>
+            <textarea class="textarea" v-model="description"></textarea>
           </div>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-primary" :disabled="opslaanbuttonIsDisabled" v-on:click="onClickSaveButton">Opslaan</button>
+        <button class="button is-primary" :disabled="saveButtonIsDisabled" v-on:click="onClickSaveButton">Opslaan</button>
         <button class="button is-text" v-on:click="onClickCloseModal">Annuleren</button>
       </footer>
     </div>
@@ -196,36 +196,36 @@
         <div class="column is-vcentered boxinfo">
           <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
-            <p class="subtitle is-5" v-html="item.begindatum"></p>
+            <p class="subtitle is-5" v-html="item.startdate"></p>
 
             <label class="label">Eind datum</label>
-            <p class="subtitle is-5" v-html="item.einddatum"></p>
+            <p class="subtitle is-5" v-html="item.enddate"></p>
 
             <label class="label">Begin tijd</label>
-            <p class="subtitle is-5" v-html="item.beginTijd"></p>
+            <p class="subtitle is-5" v-html="item.startTime"></p>
 
             <label class="label">Eind tijd</label>
-            <p class="subtitle is-5" v-html="item.eindTijd"></p>
+            <p class="subtitle is-5" v-html="item.endTime"></p>
           </div>
 
           <div class="column is-half infodata">
             <label class="label">Kilometers begin</label>
-            <p class="subtitle is-5"><span v-html="kmbegin"></span> km</p>
+            <p class="subtitle is-5"><span v-html="kmstart"></span> km</p>
 
             <label class="label">Kilometers eind</label>
-            <p class="subtitle is-5"><span v-html="kmeind"></span> km</p>
+            <p class="subtitle is-5"><span v-html="kmend"></span> km</p>
 
             <label class="label">Totaal aantal kilometers</label>
-            <p class="subtitle is-5"><span v-html="kmtotaal"></span> km</p>
+            <p class="subtitle is-5"><span v-html="kmtotal"></span> km</p>
 
             <label class="label">Postcode vertrek</label>
-            <p class="subtitle is-5" v-html="postcodevertrek"></p>
+            <p class="subtitle is-5" v-html="zipcodedeparture"></p>
 
             <label class="label">Postcode bestemming</label>
-            <p class="subtitle is-5" v-html="postcodebestemming"></p>
+            <p class="subtitle is-5" v-html="zipcodedestination"></p>
 
             <label class="label">Omschrijving/klant</label>
-            <p class="subtitle is-5" v-html="beschrijving"></p>
+            <p class="subtitle is-5" v-html="description"></p>
           </div>
         </div>
 
@@ -265,18 +265,18 @@ export default {
   name: 'app',
   data(){
     return {
-      begindatum: '',
-      einddatum: '',
-      beginTijd: '',
-      eindTijd: '',
+      startdate: '',
+      enddate: '',
+      startTime: '',
+      endTime: '',
       id: 1,
 
-      kmbegin: 0,
-      kmeind: 0,
-      kmtotaal: 0,
-      postcodevertrek: '',
-      postcodebestemming: '',
-      beschrijving: '',
+      kmstart: 0,
+      kmend: 0,
+      kmtotal: 0,
+      zipcodedeparture: '',
+      zipcodedestination: '',
+      description: '',
 
       activeModalId: '',
 
@@ -286,56 +286,57 @@ export default {
 
       infos: [
 
-      ],
+      ]
     };
 
   },
 
   computed: {
-    reserveerbuttonIsDisabled() {
+    reservatebuttonIsDisabled() {
       var currentDate = new Date();
       var convertedcurrentdate = moment(this.formatDateToString(currentDate), "D/M/YYYY").unix();
-      var str = moment(this.formatDateToString(this.begindatum), "D/M/YYYY").unix();
-      var str2 = moment(this.formatDateToString(this.einddatum), "D/M/YYYY").unix();
+      var str = moment(this.formatDateToString(this.startdate), "D/M/YYYY").unix();
+      var str2 = moment(this.formatDateToString(this.enddate), "D/M/YYYY").unix();
 
-      var begint = this.beginTijd.split(':');
-      var eindt = this.eindTijd.split(':');
-      var deel1 = (begint[0] * 60 * 60);
-      var deel2 = (begint[1] * 60);
+      var startt = this.startTime.split(':');
+      var endt = this.endTime.split(':');
+      var hours = (startt[0] * 60 * 60);
+      var minutes = (startt[1] * 60);
 
-      var deel3 = (eindt[0] * 60 * 60);
-      var deel4 = (eindt[1] * 60);
-      var totalminutesbegin = deel1 + deel2;
-      var totalminutesend = deel3 + deel4;
+      var hours2 = (endt[0] * 60 * 60);
+      var minutes2 = (endt[1] * 60);
 
-      const inputsAreValid = this.begindatum.length > 0
-                          && this.einddatum.length > 0
-                          && this.beginTijd.length > 0
-                          && this.eindTijd.length > 0;
+      var totalsecondsbegin = hours + minutes;
+      var totalsecondsend = hours2 + minutes2;
+
+      const inputsAreValid = this.startdate.length > 0
+                          && this.enddate.length > 0
+                          && this.startTime.length > 0
+                          && this.endTime.length > 0;
       const datesAreEqual = str == str2;
-      const beginTimeIsBeforeEndTime = totalminutesbegin < totalminutesend;
+      const beginTimeIsBeforeEndTime = totalsecondsbegin < totalsecondsend;
       const beginAndEndDateAreAfterCurrentDate = str >= convertedcurrentdate && str2 >= convertedcurrentdate;
       const endDateisAfterBeginDate = str2 > str;
-      const both = datesAreEqual && beginTimeIsBeforeEndTime;
+      const datesAreEqualAndBeginTimeIsBeforeEndTime = datesAreEqual && beginTimeIsBeforeEndTime;
 
       return !( inputsAreValid
         && beginAndEndDateAreAfterCurrentDate
         && endDateisAfterBeginDate
-        || both
+        || datesAreEqualAndBeginTimeIsBeforeEndTime
       );
     },
 
-    opslaanbuttonIsDisabled() {
-      return !(this.kmeind >= this.kmbegin)
+    saveButtonIsDisabled() {
+      return !(this.kmend >= this.kmstart)
     },
 
-    reserveringProgress() {
+    reservationProgress() {
       return String(
-        ( this.kmbegin > 0 ? 20 : 0 ) +
-        ( this.kmeind > 0 ? 20 : 0 ) +
-        ( this.postcodevertrek.length > 0 ? 20 : 0 ) +
-        ( this.postcodebestemming.length > 0 ? 20 : 0 ) +
-        ( this.beschrijving.length > 0 ? 20 : 0 ) );
+        ( this.kmstart > 0 ? 20 : 0 ) +
+        ( this.kmend > 0 ? 20 : 0 ) +
+        ( this.zipcodedeparture.length > 0 ? 20 : 0 ) +
+        ( this.zipcodedestination.length > 0 ? 20 : 0 ) +
+        ( this.description.length > 0 ? 20 : 0 ) );
     }
   },
 
@@ -351,17 +352,17 @@ export default {
     onClickReservateButton: function(event){
       this.activeModalId = "modal-reservation";
 
-      var str = this.formatDateToString(this.begindatum);
-      var str2 = this.formatDateToString(this.einddatum);
+      var str = this.formatDateToString(this.startdate);
+      var str2 = this.formatDateToString(this.enddate);
 
-      document.querySelector(".dateinfo").innerHTML = str;
-      document.querySelector(".dateinfo2").innerHTML = str2;
+      document.querySelector(".dateinformation").innerHTML = str;
+      document.querySelector(".dateinformation2").innerHTML = str2;
       return;
     },
 
     onClickConfirmButton: function(event){
-      var str = this.formatDateToString(this.begindatum);
-      var str2 = this.formatDateToString(this.einddatum);
+      var str = this.formatDateToString(this.startdate);
+      var str2 = this.formatDateToString(this.enddate);
 
       const convertedDate = str;
       const convertedDate2 = str2;
@@ -369,16 +370,16 @@ export default {
 
       this.items.push({
         id: this.id,
-        beginTijd: this.beginTijd,
-        eindTijd: this.eindTijd,
-        begindatum: convertedDate,
-        einddatum: convertedDate2
+        startTime: this.startTime,
+        endTime: this.endTime,
+        startdate: convertedDate,
+        enddate: convertedDate2
       });
 
-      this.beginTijd = '';
-      this.eindTijd = '';
-      this.begindatum = '';
-      this.einddatum = '';
+      this.startTime = '';
+      this.endTime = '';
+      this.startdate = '';
+      this.enddate = '';
       this.id++;
 
       return;
@@ -386,36 +387,31 @@ export default {
 
     onClickSaveButton: function(event){
       this.infos.push({
-        kmeind: this.kmeind,
-        kmbegin: this.kmbegin,
-        postcodevertrek: this.postcodevertrek,
-        postcodebestemming: this.postcodebestemming,
-        beschrijving: this.beschrijving
+        kmend: this.kmend,
+        kmstart: this.kmstart,
+        zipcodedeparture: this.zipcodedeparture,
+        zipcodedestination: this.zipcodedestination,
+        description: this.description
       });
 
-      var str = this.formatDateToString(this.begindatum);
-      var str2 = this.formatDateToString(this.einddatum);
+      var str = this.formatDateToString(this.startdate);
+      var str2 = this.formatDateToString(this.enddate);
 
       var convertedDate = str;
       var convertedDate2 = str2;
 
       this.items.push({
         id: this.id,
-        beginTijd: this.beginTijd,
-        eindTijd: this.eindTijd,
-        begindatum: convertedDate,
-        einddatum: convertedDate2
+        startTime: this.startTime,
+        endTime: this.endTime,
+        startdate: convertedDate,
+        enddate: convertedDate2
       });
 
-      // this.$set(this.items, 1, this.beginTijd);
-      // this.$set(this.items, 1, this.eindTijd);
-      // this.$set(this.items, 1, this.begindatum);
-      // this.$set(this.items, 1, this.einddatum);
-
-      this.beginTijd = '';
-      this.eindTijd = '';
-      this.begindatum = '';
-      this.einddatum = '';
+      this.startTime = '';
+      this.endTime = '';
+      this.startdate = '';
+      this.enddate = '';
 
       this.activeModalId = "";
       return;
@@ -423,7 +419,7 @@ export default {
 
     onClickShowInfoReservation: function(event){
       this.activeModalId = "modal-information";
-      this.kmtotaal = this.kmeind - this.kmbegin;
+      this.kmtotal = this.kmend - this.kmstart;
       return;
     },
 
