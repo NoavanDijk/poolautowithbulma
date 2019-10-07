@@ -150,13 +150,13 @@
         <div class="column is-vcentered boxinfo">
           <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
-              <input class="input" type="date" v-model="item.begindatum">
+              <input class="input" type="date" v-model="begindatum">
             <label class="label">Eind datum</label>
-              <input class="input" type="date" v-model="item.einddatum">
+              <input class="input" type="date" v-model="einddatum">
             <label class="label">Begin tijd</label>
-              <input class="input" type="time" v-model="item.beginTijd">
+              <input class="input" type="time" v-model="beginTijd">
             <label class="label">Eind tijd</label>
-              <input class="input" type="time" v-model="item.eindTijd">
+              <input class="input" type="time" v-model="eindTijd">
           </div>
 
           <div class="column is-half infodata">
@@ -260,7 +260,7 @@
 </template>
 
 <script>
-
+import moment from 'moment'
 export default {
   name: 'app',
   data(){
@@ -281,6 +281,7 @@ export default {
       activeModalId: '',
 
       items: [
+
       ],
 
       infos: [
@@ -293,13 +294,34 @@ export default {
   computed: {
     reserveerbuttonIsDisabled() {
       var currentDate = new Date();
-      var convertedcurrentdate = this.formatDateToString(currentDate);
-      return !( this.begindatum.length > 0
-        && this.einddatum.length > 0
-        && this.beginTijd.length > 0
-        && this.eindTijd.length > 0
-        && this.einddatum >= this.begindatum
-        // && this.begindatum >= convertedcurrentdate
+      var convertedcurrentdate = moment(this.formatDateToString(currentDate), "D/M/YYYY").unix();
+      var str = moment(this.formatDateToString(this.begindatum), "D/M/YYYY").unix();
+      var str2 = moment(this.formatDateToString(this.einddatum), "D/M/YYYY").unix();
+
+      var begint = this.beginTijd.split(':');
+      var eindt = this.eindTijd.split(':');
+      var deel1 = (begint[0] * 60 * 60);
+      var deel2 = (begint[1] * 60);
+
+      var deel3 = (eindt[0] * 60 * 60);
+      var deel4 = (eindt[1] * 60);
+      var totalminutesbegin = deel1 + deel2;
+      var totalminutesend = deel3 + deel4;
+
+      const inputsAreValid = this.begindatum.length > 0
+                          && this.einddatum.length > 0
+                          && this.beginTijd.length > 0
+                          && this.eindTijd.length > 0;
+      const datesAreEqual = str == str2;
+      const beginTimeIsBeforeEndTime = totalminutesbegin < totalminutesend;
+      const beginAndEndDateAreAfterCurrentDate = str >= convertedcurrentdate && str2 >= convertedcurrentdate;
+      const endDateisAfterBeginDate = str2 > str;
+      const both = datesAreEqual && beginTimeIsBeforeEndTime;
+
+      return !( inputsAreValid
+        && beginAndEndDateAreAfterCurrentDate
+        && endDateisAfterBeginDate
+        || both
       );
     },
 
@@ -370,6 +392,30 @@ export default {
         postcodebestemming: this.postcodebestemming,
         beschrijving: this.beschrijving
       });
+
+      var str = this.formatDateToString(this.begindatum);
+      var str2 = this.formatDateToString(this.einddatum);
+
+      var convertedDate = str;
+      var convertedDate2 = str2;
+
+      this.items.push({
+        id: this.id,
+        beginTijd: this.beginTijd,
+        eindTijd: this.eindTijd,
+        begindatum: convertedDate,
+        einddatum: convertedDate2
+      });
+
+      // this.$set(this.items, 1, this.beginTijd);
+      // this.$set(this.items, 1, this.eindTijd);
+      // this.$set(this.items, 1, this.begindatum);
+      // this.$set(this.items, 1, this.einddatum);
+
+      this.beginTijd = '';
+      this.eindTijd = '';
+      this.begindatum = '';
+      this.einddatum = '';
 
       this.activeModalId = "";
       return;
