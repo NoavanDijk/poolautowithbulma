@@ -150,21 +150,21 @@
         <div class="column is-vcentered boxinfo">
           <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
-              <input class="input" type="date" v-model="startdate">
+              <input class="input" type="date" v-model="startdateedit">
             <label class="label">Eind datum</label>
-              <input class="input" type="date" v-model="enddate">
+              <input class="input" type="date" v-model="enddateedit">
             <label class="label">Begin tijd</label>
-              <input class="input" type="time" v-model="startTime">
+              <input class="input" type="time" v-model="startTimeedit">
             <label class="label">Eind tijd</label>
-              <input class="input" type="time" v-model="endTime">
+              <input class="input" type="time" v-model="endTimeedit">
           </div>
 
           <div class="column is-half infodata">
             <label class="label">Kilometers begin</label>
-            <input class="input" type="number" placeholder="10" v-model="kmstart">
+            <input class="input" type="number" placeholder="10" v-model.number="kmstart">
 
             <label class="label">Kilometers eind</label>
-            <input class="input" type="number" placeholder="20" v-model="kmend">
+            <input class="input" type="number" placeholder="20" v-model.number="kmend">
 
             <label class="label">Postcode vertrek</label>
             <input class="input" type="text" placeholder="1234 AB" v-model="zipcodedeparture">
@@ -271,6 +271,11 @@ export default {
       endTime: '',
       id: 1,
 
+      startdateedit: '',
+      enddateedit: '',
+      startTimeedit: '',
+      endTimeedit: '',
+
       kmstart: 0,
       kmend: 0,
       kmtotal: 0,
@@ -327,7 +332,8 @@ export default {
     },
 
     saveButtonIsDisabled() {
-      return !(this.kmend >= this.kmstart)
+      const kmEndIsBiggerThanKmstart = this.kmend >= this.kmstart;
+      return !(kmEndIsBiggerThanKmstart);
     },
 
     reservationProgress() {
@@ -361,11 +367,9 @@ export default {
     },
 
     onClickConfirmButton: function(event){
-      var str = this.formatDateToString(this.startdate);
-      var str2 = this.formatDateToString(this.enddate);
+      const convertedDate = this.formatDateToString(this.startdate);
+      const convertedDate2 = this.formatDateToString(this.enddate);
 
-      const convertedDate = str;
-      const convertedDate2 = str2;
       this.activeModalId = "";
 
       this.items.push({
@@ -393,25 +397,6 @@ export default {
         zipcodedestination: this.zipcodedestination,
         description: this.description
       });
-
-      var str = this.formatDateToString(this.startdate);
-      var str2 = this.formatDateToString(this.enddate);
-
-      var convertedDate = str;
-      var convertedDate2 = str2;
-
-      this.items.push({
-        id: this.id,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        startdate: convertedDate,
-        enddate: convertedDate2
-      });
-
-      this.startTime = '';
-      this.endTime = '';
-      this.startdate = '';
-      this.enddate = '';
 
       this.activeModalId = "";
       return;
