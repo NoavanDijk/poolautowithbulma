@@ -31,7 +31,7 @@
       </div>
   </nav>
 
-<!-- The 3 tiles -->
+<!-- The 2 tiles -->
   <div class="homepicture">
     <div class="tile is-ancestor">
       <div class="tile is-8 is-vertical">
@@ -41,8 +41,8 @@
             <div class="tile is-child box">
               <p class="title">Reserveringen</p>
 
-              <div class="level reservering" v-for="(item, id) in items">
-                <div class="level-left" v-on:click="onClickShowInfoReservation">
+              <div class="level reservering" v-for="(item, index) in items">
+                <div class="level-left" v-on:click="e => onClickShowInfoReservation(item, index)">
                   <div class="level-item">
                     <p class="subtitle is-5"><span v-html="item.id"></span>: &ensp;</p>
                   </div>
@@ -67,9 +67,9 @@
                 </div>
                 <div class="level-right">
                   <div class="level-item">
-                    <p class="subtitle is-5"><span v-html="reservationProgress"></span>%</p>
+                    <p class="subtitle is-5"><span v-html="reservationProgress[index]"></span>%</p>
                   </div>
-                  <div class="level-item" v-on:click="onClickEditReservation">
+                  <div class="level-item" v-on:click="e => onClickEditReservation(index)">
                     <i class="fas fa-edit"></i>
                   </div>
                   <div class="level-item" v-on:click="onDeleteReservation(item)">
@@ -95,16 +95,6 @@
               </form>
 
               <button class="button is-primary is-normal reserveer" :disabled="reservatebuttonIsDisabled" v-on:click="onClickReservateButton">Reserveer</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tile is-parent">
-        <div class="tile is-child box">
-          <p class="title">Gegevens</p>
-          <div class="level" v-for="info in infos">
-            <div class="level-left">
             </div>
           </div>
         </div>
@@ -139,7 +129,7 @@
   </div>
 
 <!-- Modal when you want to edit the reservation-->
-  <div class="modal js-modaleditinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-editinformation' }">
+  <div class="modal js-modaleditinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-editinformation-' + index }">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -148,7 +138,7 @@
       </header>
       <section class="modal-card-body">
         <div class="column is-vcentered boxinfo">
-          <div class="column is-half inforeservation">
+          <!-- <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
               <input class="input" type="date" v-model="startdateedit">
             <label class="label">Eind datum</label>
@@ -157,35 +147,35 @@
               <input class="input" type="time" v-model="startTimeedit">
             <label class="label">Eind tijd</label>
               <input class="input" type="time" v-model="endTimeedit">
-          </div>
+          </div> -->
 
           <div class="column is-half infodata">
             <label class="label">Kilometers begin</label>
-            <input class="input" type="number" placeholder="10" v-model.number="kmstart">
+            <input class="input" type="number" placeholder="10" v-model.number="item.kmstart">
 
             <label class="label">Kilometers eind</label>
-            <input class="input" type="number" placeholder="20" v-model.number="kmend">
+            <input class="input" type="number" placeholder="20" v-model.number="item.kmend">
 
             <label class="label">Postcode vertrek</label>
-            <input class="input" type="text" placeholder="1234 AB" v-model="zipcodedeparture">
+            <input class="input" type="text" placeholder="1234 AB" v-model="item.zipcodedeparture">
 
             <label class="label">Postcode bestemming</label>
-            <input class="input" type="text" placeholder="1234 AB" v-model="zipcodedestination">
+            <input class="input" type="text" placeholder="1234 AB" v-model="item.zipcodedestination">
 
             <label class="label">Omschrijving/klant</label>
-            <textarea class="textarea" v-model="description"></textarea>
+            <textarea class="textarea" v-model="item.description"></textarea>
           </div>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-primary" :disabled="saveButtonIsDisabled" v-on:click="onClickSaveButton">Opslaan</button>
+        <button class="button is-primary" :disabled="saveButtonIsDisabled[index]" v-on:click="onClickSaveButton">Opslaan</button>
         <button class="button is-text" v-on:click="onClickCloseModal">Annuleren</button>
       </footer>
     </div>
   </div>
 
 <!-- When you click on the reservation to see the data -->
-  <div class="modal js-modalinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-information' }">
+  <div class="modal js-modalinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-information-' + index }">
     <div class="modal-background"></div>
     <div class="modal-card modalcard">
       <header class="modal-card-head">
@@ -210,22 +200,22 @@
 
           <div class="column is-half infodata">
             <label class="label">Kilometers begin</label>
-            <p class="subtitle is-5"><span v-html="kmstart"></span> km</p>
+            <p class="subtitle is-5"><span v-html="item.kmstart"></span> km</p>
 
             <label class="label">Kilometers eind</label>
-            <p class="subtitle is-5"><span v-html="kmend"></span> km</p>
+            <p class="subtitle is-5"><span v-html="item.kmend"></span> km</p>
 
             <label class="label">Totaal aantal kilometers</label>
-            <p class="subtitle is-5"><span v-html="kmtotal"></span> km</p>
+            <p class="subtitle is-5"><span v-html="item.kmtotal"></span> km</p>
 
             <label class="label">Postcode vertrek</label>
-            <p class="subtitle is-5" v-html="zipcodedeparture"></p>
+            <p class="subtitle is-5" v-html="item.zipcodedeparture"></p>
 
             <label class="label">Postcode bestemming</label>
-            <p class="subtitle is-5" v-html="zipcodedestination"></p>
+            <p class="subtitle is-5" v-html="item.zipcodedestination"></p>
 
             <label class="label">Omschrijving/klant</label>
-            <p class="subtitle is-5" v-html="description"></p>
+            <p class="subtitle is-5" v-html="item.description"></p>
           </div>
         </div>
 
@@ -271,25 +261,11 @@ export default {
       endTime: '',
       id: 1,
 
-      startdateedit: '',
-      enddateedit: '',
-      startTimeedit: '',
-      endTimeedit: '',
-
-      kmstart: 0,
-      kmend: 0,
       kmtotal: 0,
-      zipcodedeparture: '',
-      zipcodedestination: '',
-      description: '',
 
       activeModalId: '',
 
       items: [
-
-      ],
-
-      infos: [
 
       ]
     };
@@ -332,17 +308,28 @@ export default {
     },
 
     saveButtonIsDisabled() {
-      const kmEndIsBiggerThanKmstart = this.kmend >= this.kmstart;
-      return !(kmEndIsBiggerThanKmstart);
+      const retVal = [];
+      for(var i =0; i < this.items.length; i++){
+        const item = this.items[i];
+        const kmEndIsBiggerThanKmstart = item.kmend >= item.kmstart;
+        retVal.push(!(kmEndIsBiggerThanKmstart));
+      }
+      return retVal;
     },
 
     reservationProgress() {
-      return String(
-        ( this.kmstart > 0 ? 20 : 0 ) +
-        ( this.kmend > 0 ? 20 : 0 ) +
-        ( this.zipcodedeparture.length > 0 ? 20 : 0 ) +
-        ( this.zipcodedestination.length > 0 ? 20 : 0 ) +
-        ( this.description.length > 0 ? 20 : 0 ) );
+      const retVal = [];
+      for(var i =0; i < this.items.length; i++){
+        const item = this.items[i];
+        const berekening = String(
+          ( item.kmstart > 0 ? 20 : 0 ) +
+          ( item.kmend > 0 ? 20 : 0 ) +
+          ( item.zipcodedeparture.length > 0 ? 20 : 0 ) +
+          ( item.zipcodedestination.length > 0 ? 20 : 0 ) +
+          ( item.description.length > 0 ? 20 : 0 ) );
+          retVal.push(berekening);
+      }
+      return retVal;
     }
   },
 
@@ -377,7 +364,12 @@ export default {
         startTime: this.startTime,
         endTime: this.endTime,
         startdate: convertedDate,
-        enddate: convertedDate2
+        enddate: convertedDate2,
+        kmend: 0,
+        kmstart: 0,
+        zipcodedeparture: '',
+        zipcodedestination: '',
+        description: ''
       });
 
       this.startTime = '';
@@ -390,26 +382,18 @@ export default {
     },
 
     onClickSaveButton: function(event){
-      this.infos.push({
-        kmend: this.kmend,
-        kmstart: this.kmstart,
-        zipcodedeparture: this.zipcodedeparture,
-        zipcodedestination: this.zipcodedestination,
-        description: this.description
-      });
-
       this.activeModalId = "";
       return;
     },
 
-    onClickShowInfoReservation: function(event){
-      this.activeModalId = "modal-information";
-      this.kmtotal = this.kmend - this.kmstart;
+    onClickShowInfoReservation: function(item, index){
+      this.activeModalId = "modal-information-" + index;
+      item.kmtotal = item.kmend - item.kmstart;
       return;
     },
 
-    onClickEditReservation: function(event){
-      this.activeModalId = "modal-editinformation";
+    onClickEditReservation: function(index){
+      this.activeModalId = "modal-editinformation-" + index;
       return;
     },
 
