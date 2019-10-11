@@ -47,13 +47,13 @@
                     <p class="subtitle is-5"><span v-html="item.id"></span>: &ensp;</p>
                   </div>
                   <div class="level-item">
-                    <p class="subtitle is-5" v-html="item.startdate"></p>
+                    <p class="subtitle is-5" v-html="formatDateToString(item.startdate)"></p>
                   </div>
                   <div class="level-item">
                     <p> - </p>
                   </div>
                   <div class="level-item">
-                    <p class="subtitle is-5" v-html="item.enddate"></p>
+                    <p class="subtitle is-5" v-html="formatDateToString(item.enddate)"></p>
                   </div>
                   <div class="level-item">
                     <p class="subtitle is-5">| &ensp;<span v-html="item.startTime"></span></p>
@@ -113,9 +113,9 @@
       </header>
       <section class="modal-card-body">
         <label class="label">Begin datum</label>
-        <p class="subtitle is-5 dateinformation"></p>
+        <p class="subtitle is-5" v-html="formatDateToString(startdate)"></p>
         <label class="label">Eind datum</label>
-        <p class="subtitle is-5 dateinformation2"></p>
+        <p class="subtitle is-5" v-html="formatDateToString(enddate)"></p>
         <label class="label">Begin tijd</label>
         <p class="subtitle is-5" v-html="startTime"></p>
         <label class="label">Eind tijd</label>
@@ -138,16 +138,16 @@
       </header>
       <section class="modal-card-body">
         <div class="column is-vcentered boxinfo">
-          <!-- <div class="column is-half inforeservation">
+          <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
-              <input class="input" type="date" v-model="startdateedit">
+              <input class="input" type="date" v-model="item.startdate">
             <label class="label">Eind datum</label>
-              <input class="input" type="date" v-model="enddateedit">
+              <input class="input" type="date" v-model="item.enddate">
             <label class="label">Begin tijd</label>
-              <input class="input" type="time" v-model="startTimeedit">
+              <input class="input" type="time" v-model="item.startTime">
             <label class="label">Eind tijd</label>
-              <input class="input" type="time" v-model="endTimeedit">
-          </div> -->
+              <input class="input" type="time" v-model="item.endTime">
+          </div>
 
           <div class="column is-half infodata">
             <label class="label">Kilometers begin</label>
@@ -168,7 +168,7 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-primary" :disabled="saveButtonIsDisabled[index]" v-on:click="onClickSaveButton">Opslaan</button>
+        <button class="button is-primary" :disabled="saveButtonIsDisabled[index]" v-on:click="e => onClickSaveButton(item, index)">Opslaan</button>
         <button class="button is-text" v-on:click="onClickCloseModal">Annuleren</button>
       </footer>
     </div>
@@ -186,10 +186,10 @@
         <div class="column is-vcentered boxinfo">
           <div class="column is-half inforeservation">
             <label class="label">Begin datum</label>
-            <p class="subtitle is-5" v-html="item.startdate"></p>
+            <p class="subtitle is-5" v-html="formatDateToString(item.startdate)"></p>
 
             <label class="label">Eind datum</label>
-            <p class="subtitle is-5" v-html="item.enddate"></p>
+            <p class="subtitle is-5" v-html="formatDateToString(item.enddate)"></p>
 
             <label class="label">Begin tijd</label>
             <p class="subtitle is-5" v-html="item.startTime"></p>
@@ -221,7 +221,7 @@
 
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-primary"v-on:click="onClickEditReservation">Bewerken</button>
+        <button class="button is-primary"v-on:click="e => onClickEditReservation(index)">Bewerken</button>
         <button class="button" v-on:click="onClickCloseModal">Annuleren</button>
       </footer>
     </div>
@@ -303,23 +303,50 @@ export default {
       return !( inputsAreValid
         && beginAndEndDateAreAfterCurrentDate
         && endDateisAfterBeginDate
-        || datesAreEqualAndBeginTimeIsBeforeEndTime
-      );
+        || datesAreEqualAndBeginTimeIsBeforeEndTime);
     },
 
     saveButtonIsDisabled() {
       const retVal = [];
       for(var i =0; i < this.items.length; i++){
         const item = this.items[i];
+
+
+        var currentDate = new Date();
+        var convertedcurrentdate = moment(this.formatDateToString(currentDate), "D/M/YYYY").unix();
+        var str = moment(this.formatDateToString(item.startdate), "D/M/YYYY").unix();
+        var str2 = moment(this.formatDateToString(item.enddate), "D/M/YYYY").unix();
+
+        var startt = item.startTime.split(':');
+        var endt = item.endTime.split(':');
+        var hours = (startt[0] * 60 * 60);
+        var minutes = (startt[1] * 60);
+
+        var hours2 = (endt[0] * 60 * 60);
+        var minutes2 = (endt[1] * 60);
+
+        var totalsecondsbegin = hours + minutes;
+        var totalsecondsend = hours2 + minutes2;
+
         const kmEndIsBiggerThanKmstart = item.kmend >= item.kmstart;
-        retVal.push(!(kmEndIsBiggerThanKmstart));
+        const datesAreEqual = str == str2;
+        const beginTimeIsBeforeEndTime = totalsecondsbegin < totalsecondsend;
+        const beginAndEndDateAreAfterCurrentDate = str >= convertedcurrentdate && str2 >= convertedcurrentdate;
+        const endDateisAfterBeginDate = str2 > str;
+        const datesAreEqualAndBeginTimeIsBeforeEndTime = datesAreEqual && beginTimeIsBeforeEndTime;
+
+        const boolShouldBeDisabledOrNot = !(kmEndIsBiggerThanKmstart && beginAndEndDateAreAfterCurrentDate
+        && endDateisAfterBeginDate
+        || datesAreEqualAndBeginTimeIsBeforeEndTime);
+
+        retVal.push(boolShouldBeDisabledOrNot);
       }
       return retVal;
     },
 
     reservationProgress() {
       const retVal = [];
-      for(var i =0; i < this.items.length; i++){
+      for(var i = 0; i < this.items.length; i++){
         const item = this.items[i];
         const berekening = String(
           ( item.kmstart > 0 ? 20 : 0 ) +
@@ -344,27 +371,18 @@ export default {
 
     onClickReservateButton: function(event){
       this.activeModalId = "modal-reservation";
-
-      var str = this.formatDateToString(this.startdate);
-      var str2 = this.formatDateToString(this.enddate);
-
-      document.querySelector(".dateinformation").innerHTML = str;
-      document.querySelector(".dateinformation2").innerHTML = str2;
       return;
     },
 
     onClickConfirmButton: function(event){
-      const convertedDate = this.formatDateToString(this.startdate);
-      const convertedDate2 = this.formatDateToString(this.enddate);
-
       this.activeModalId = "";
 
       this.items.push({
         id: this.id,
         startTime: this.startTime,
         endTime: this.endTime,
-        startdate: convertedDate,
-        enddate: convertedDate2,
+        startdate: this.startdate,
+        enddate: this.enddate,
         kmend: 0,
         kmstart: 0,
         zipcodedeparture: '',
@@ -381,7 +399,7 @@ export default {
       return;
     },
 
-    onClickSaveButton: function(event){
+    onClickSaveButton: function(item, index){
       this.activeModalId = "";
       return;
     },
