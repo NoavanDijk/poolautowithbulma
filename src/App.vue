@@ -31,13 +31,95 @@
       </div>
   </nav>
 
+  <section class="section">
+    <div class="container">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Reservering
+          </p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <div class="plus" v-on:click="onClickConfirmButton">
+              <svg id="icon-plus" class="icon-plus" viewBox="0 0 32 32">
+      					<path d="M0 0h32v32h-32v-32z" class="plus-bg"></path>
+      					<path d="M7.406 15.429h17.189v1.143h-17.189v-1.143z" class="plus-line"></path>
+      					<path d="M15.429 7.406h1.143v17.189h-1.143v-17.189z" class="plus-line"></path>
+      				</svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <h1 class="title">Reserveringen</h1> -->
+      <div class="card" v-for="(item, index) in items">
+        <header class="card-header">
+          <p class="card-header-title">
+            Reservering
+          </p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <p v-html="formatDateToString(item.startdate)"></p>
+            <div v-on:click="e => onClickEditReservation(index)">
+              <i class="fas fa-edit"></i>
+            </div>
+            <div v-on:click="onDeleteReservation(item)">
+              <i class="fas fa-trash"></i>
+            </div>
+
+            <!-- <i class="fas fa-plus-circle"></i> -->
+          </div>
+        </div>
+        <footer class="card-footer">
+          <i class="fas fa-car"></i>
+        </footer>
+      </div>
+    </div>
+  </section>
+
+  <div class="tile is-ancestor">
+    <div class="tile is-vertical">
+      <div class="tile">
+      <div class="tile is-parent is-vertical" v-on:click="">
+        <div class="tile is-child box">
+            <label class="label">Begin datum</label>
+              <input class="input" type="date" v-model="startdate">
+            <label class="label">Eind datum</label>
+              <input class="input" type="date" v-model="enddate">
+            <label class="label">Begin tijd</label>
+              <input class="input" type="time" v-model="startTime">
+            <label class="label">Eind tijd</label>
+              <input class="input" type="time" v-model="endTime">
+            <div class="reservatebutton">
+              <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickReservateButton">Reserveren</button>
+            </div>
+        </div>
+      </div>
+      <div class="tile is-parent is-vertical">
+        <div class="tile is-child box">
+          <p>Hier komt een melding dat je de kilometersstand moet onthouden.</p>
+        </div>
+      </div>
+      <div class="tile is-parent is-vertical">
+        <div class="tile is-child box">
+          <p>Hier komen de invoervelden voor de kilometers en meer om in te voeren</p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
 <!-- The 2 tiles -->
   <div class="homepicture">
+
+
     <div class="tile is-ancestor">
       <div class="tile is-8 is-vertical">
         <div class="tile">
           <!-- Reserveringen tile -->
-          <div class="tile is-vertical is-parent">
+          <div class="tile is-vertical is-parent is-8">
             <div class="tile is-child box">
               <p class="title">Reserveringen</p>
 
@@ -96,11 +178,23 @@
 
               <button class="button is-primary is-normal reserveer" :disabled="reservatebuttonIsDisabled" v-on:click="onClickReservateButton">Reserveer</button>
             </div>
+            </div>
+
+            <div class="tile is-vertical is-parent is-8">
+            <div class="tile is-child box" >
+              <p class="title">
+                Auto reserveren
+              </p>
+
+            </div>
           </div>
+
         </div>
       </div>
 
     </div>
+
+
   </div>
 
 <!-- Modal when you make a reservation -->
@@ -311,7 +405,6 @@ export default {
       for(var i =0; i < this.items.length; i++){
         const item = this.items[i];
 
-
         var currentDate = new Date();
         var convertedcurrentdate = moment(this.formatDateToString(currentDate), "D/M/YYYY").unix();
         var str = moment(this.formatDateToString(item.startdate), "D/M/YYYY").unix();
@@ -411,6 +504,7 @@ export default {
     },
 
     onClickEditReservation: function(index){
+      console.log("edit geklikt");
       this.activeModalId = "modal-editinformation-" + index;
       return;
     },

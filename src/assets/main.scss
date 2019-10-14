@@ -50,8 +50,14 @@ $size-5: 1.1rem;
 }
 
 .fa-trash, .fa-edit{
-  font-size: 18px;
+  font-size: 22px;
   margin-left: 1em;
+}
+
+.fa-plus-circle{
+  font-size: 50px;
+  display: flex;
+  justify-content: center;
 }
 
 .textarea{
@@ -74,4 +80,41 @@ $size-5: 1.1rem;
 
 .tile{
   justify-content: center;
+}
+
+.container{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 0.5em;
+  background-color: white;
+  height: 255px;
+}
+
+.plus-line{
+  stroke: #fff;
+  fill: #fff;
+}
+
+.plus-bg{
+  fill: #ff0032;
+}
+
+#icon-plus{
+  width: 35%;
+}
+
+.plus{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.fa-car{
+  font-size: 50px;
+}
+
+.reservatebutton{
+  display: flex;
+  justify-content: flex-end;
 }
