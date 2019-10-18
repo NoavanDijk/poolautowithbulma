@@ -31,17 +31,18 @@
       </div>
   </nav>
 
+<!-- Add reservation -->
   <section class="section">
-    <div class="container">
+    <div class="container containercards">
       <div class="card">
         <header class="card-header">
           <p class="card-header-title">
-            Reservering
+            Voeg reservering toe
           </p>
         </header>
         <div class="card-content">
           <div class="content">
-            <div class="plus" v-on:click="onClickConfirmButton">
+            <div class="plus" v-on:click="onClickAddReservationButton">
               <svg id="icon-plus" class="icon-plus" viewBox="0 0 32 32">
       					<path d="M0 0h32v32h-32v-32z" class="plus-bg"></path>
       					<path d="M7.406 15.429h17.189v1.143h-17.189v-1.143z" class="plus-line"></path>
@@ -52,37 +53,37 @@
         </div>
       </div>
 
-      <!-- <h1 class="title">Reserveringen</h1> -->
-      <div class="card" v-for="(item, index) in items">
-        <header class="card-header">
-          <p class="card-header-title">
-            Reservering
-          </p>
-        </header>
-        <div class="card-content">
-          <div class="content">
-            <p v-html="formatDateToString(item.startdate)"></p>
-            <div v-on:click="e => onClickEditReservation(index)">
-              <i class="fas fa-edit"></i>
+<!-- Reservation card -->
+      <div class="cards" v-for="(item, index) in items">
+        <div class="card" v-on:click="changeColor(index)" v-bind:class="{'active': index == activeIndex}" >
+          <header class="card-header">
+            <p class="card-header-title">
+              Reservering
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <p v-html="formatDateToString(item.startdate)"></p>
+              <br />
+              <div class="iconcard" v-on:click="onDeleteReservation(item)">
+                <i class="fas fa-trash"></i>
+              </div>
             </div>
-            <div v-on:click="onDeleteReservation(item)">
-              <i class="fas fa-trash"></i>
-            </div>
-
-            <!-- <i class="fas fa-plus-circle"></i> -->
           </div>
+          <footer class="card-footer">
+            <i class="fas fa-car"></i>
+          </footer>
         </div>
-        <footer class="card-footer">
-          <i class="fas fa-car"></i>
-        </footer>
       </div>
     </div>
   </section>
 
-  <div class="tile is-ancestor">
+<!-- First tile with date and time -->
+  <div class="tile is-ancestor tilebox">
+    <div class="containertiles">
     <div class="tile is-vertical">
       <div class="tile">
-      <div class="tile is-parent is-vertical" v-on:click="">
+      <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
         <div class="tile is-child box">
             <label class="label">Begin datum</label>
               <input class="input" type="date" v-model="startdate">
@@ -93,233 +94,60 @@
             <label class="label">Eind tijd</label>
               <input class="input" type="time" v-model="endTime">
             <div class="reservatebutton">
-              <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickReservateButton">Reserveren</button>
+              <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton">Reserveren</button>
             </div>
         </div>
       </div>
-      <div class="tile is-parent is-vertical">
+
+<!-- Second tile with warning -->
+      <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
         <div class="tile is-child box">
-          <p>Hier komt een melding dat je de kilometersstand moet onthouden.</p>
+          <p><b>LET OP!</b><br /><br /> Onthoud je kilometerstanden! Deze moeten na je rit ingevoerd worden bij de volgende stap.</p>
+          <div class="nextbutton">
+            <button class="button is-primary">Volgende</button>
+          </div>
         </div>
       </div>
-      <div class="tile is-parent is-vertical">
+
+<!-- Third tile with data like km and zipcodes -->
+      <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
         <div class="tile is-child box">
-          <p>Hier komen de invoervelden voor de kilometers en meer om in te voeren</p>
+          <div class="kilometers">
+            <div class="kmbegin">
+              <label class="label">Kilometers begin</label>
+              <input class="input input2" type="number" placeholder="10" v-model="kmstart">
+            </div>
+            <div class="kmeind">
+              <label class="label">Kilometers eind</label>
+              <input class="input input2" type="number" placeholder="20" v-model="kmend">
+            </div>
+          </div>
+
+          <div class="zipcodes">
+            <div class="zipcodedeparture">
+              <br />
+              <label class="label">Postcode vertrek</label>
+              <input class="input input2" type="text" placeholder="1234 AB" v-model="zipcodedeparture">
+            </div>
+
+            <div class="zipcodedestination">
+              <label class="label">Postcode bestemming</label>
+              <input class="input input2" type="text" placeholder="1234 AB" v-model="zipcodedestination">
+            </div>
+          </div>
+
+          <label class="label">Omschrijving/klant</label>
+          <textarea class="textarea" v-model="description"></textarea>
+
+          <div class="savebutton">
+            <button class="button is-primary" :disabled="saveButtonIsDisabled" v-on:click="onClickSaveButton">Opslaan</button>
+          </div>
         </div>
       </div>
     </div>
     </div>
   </div>
-
-<!-- The 2 tiles -->
-  <div class="homepicture">
-
-
-    <div class="tile is-ancestor">
-      <div class="tile is-8 is-vertical">
-        <div class="tile">
-          <!-- Reserveringen tile -->
-          <div class="tile is-vertical is-parent is-8">
-            <div class="tile is-child box">
-              <p class="title">Reserveringen</p>
-
-              <div class="level reservering" v-for="(item, index) in items">
-                <div class="level-left" v-on:click="e => onClickShowInfoReservation(item, index)">
-                  <div class="level-item">
-                    <p class="subtitle is-5"><span v-html="item.id"></span>: &ensp;</p>
-                  </div>
-                  <div class="level-item">
-                    <p class="subtitle is-5" v-html="formatDateToString(item.startdate)"></p>
-                  </div>
-                  <div class="level-item">
-                    <p> - </p>
-                  </div>
-                  <div class="level-item">
-                    <p class="subtitle is-5" v-html="formatDateToString(item.enddate)"></p>
-                  </div>
-                  <div class="level-item">
-                    <p class="subtitle is-5">| &ensp;<span v-html="item.startTime"></span></p>
-                  </div>
-                  <div class="level-item">
-                    <p> - </p>
-                  </div>
-                  <div class="level-item">
-                    <p class="subtitle is-5" v-html="item.endTime"></p>
-                  </div>
-                </div>
-                <div class="level-right">
-                  <div class="level-item">
-                    <p class="subtitle is-5"><span v-html="reservationProgress[index]"></span>%</p>
-                  </div>
-                  <div class="level-item" v-on:click="e => onClickEditReservation(index)">
-                    <i class="fas fa-edit"></i>
-                  </div>
-                  <div class="level-item" v-on:click="onDeleteReservation(item)">
-                    <i class="fas fa-trash"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Auto reserveren tile -->
-            <div class="tile is-child box">
-              <p class="title">
-                Auto reserveren
-              </p>
-              <form class="formreservation">
-                <label class="label">Begin datum</label>
-                  <input class="input" type="date" v-model="startdate">
-                <label class="label">Eind datum</label>
-                  <input class="input" type="date" v-model="enddate">
-                <label class="label">Begin tijd</label>
-                  <input class="input" type="time" v-model="startTime">
-                <label class="label">Eind tijd</label>
-                  <input class="input" type="time" v-model="endTime">
-              </form>
-
-              <button class="button is-primary is-normal reserveer" :disabled="reservatebuttonIsDisabled" v-on:click="onClickReservateButton">Reserveer</button>
-            </div>
-            </div>
-
-            <div class="tile is-vertical is-parent is-8">
-            <div class="tile is-child box" >
-              <p class="title">
-                Auto reserveren
-              </p>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
-
-  </div>
-
-<!-- Modal when you make a reservation -->
-  <div class="modal js-modal" :class="{ 'is-active': activeModalId === 'modal-reservation' }">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title is-family-secondary">Bevestiging reservering</p>
-        <button class="delete" aria-label="close" v-on:click="onClickCloseModal"></button>
-      </header>
-      <section class="modal-card-body">
-        <label class="label">Begin datum</label>
-        <p class="subtitle is-5" v-html="formatDateToString(startdate)"></p>
-        <label class="label">Eind datum</label>
-        <p class="subtitle is-5" v-html="formatDateToString(enddate)"></p>
-        <label class="label">Begin tijd</label>
-        <p class="subtitle is-5" v-html="startTime"></p>
-        <label class="label">Eind tijd</label>
-        <p class="subtitle is-5" v-html="endTime"></p>
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-primary" v-on:click="onClickConfirmButton">Bevestigen</button>
-        <button class="button is-text" v-on:click="onClickCloseModal">Annuleren</button>
-      </footer>
-    </div>
-  </div>
-
-<!-- Modal when you want to edit the reservation-->
-  <div class="modal js-modaleditinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-editinformation-' + index }">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title is-family-secondary">Gegevens invoeren</p>
-        <button class="delete" aria-label="close" v-on:click="onClickCloseModal"></button>
-      </header>
-      <section class="modal-card-body">
-        <div class="column is-vcentered boxinfo">
-          <div class="column is-half inforeservation">
-            <label class="label">Begin datum</label>
-              <input class="input" type="date" v-model="item.startdate">
-            <label class="label">Eind datum</label>
-              <input class="input" type="date" v-model="item.enddate">
-            <label class="label">Begin tijd</label>
-              <input class="input" type="time" v-model="item.startTime">
-            <label class="label">Eind tijd</label>
-              <input class="input" type="time" v-model="item.endTime">
-          </div>
-
-          <div class="column is-half infodata">
-            <label class="label">Kilometers begin</label>
-            <input class="input" type="number" placeholder="10" v-model.number="item.kmstart">
-
-            <label class="label">Kilometers eind</label>
-            <input class="input" type="number" placeholder="20" v-model.number="item.kmend">
-
-            <label class="label">Postcode vertrek</label>
-            <input class="input" type="text" placeholder="1234 AB" v-model="item.zipcodedeparture">
-
-            <label class="label">Postcode bestemming</label>
-            <input class="input" type="text" placeholder="1234 AB" v-model="item.zipcodedestination">
-
-            <label class="label">Omschrijving/klant</label>
-            <textarea class="textarea" v-model="item.description"></textarea>
-          </div>
-        </div>
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-primary" :disabled="saveButtonIsDisabled[index]" v-on:click="e => onClickSaveButton(item, index)">Opslaan</button>
-        <button class="button is-text" v-on:click="onClickCloseModal">Annuleren</button>
-      </footer>
-    </div>
-  </div>
-
-<!-- When you click on the reservation to see the data -->
-  <div class="modal js-modalinformation" v-for="(item, index) in items" :class="{ 'is-active': activeModalId === 'modal-information-' + index }">
-    <div class="modal-background"></div>
-    <div class="modal-card modalcard">
-      <header class="modal-card-head">
-        <p class="modal-card-title is-family-secondary">Gegevens</p>
-        <button class="delete" aria-label="close" v-on:click="onClickCloseModal"></button>
-      </header>
-      <section class="modal-card-body">
-        <div class="column is-vcentered boxinfo">
-          <div class="column is-half inforeservation">
-            <label class="label">Begin datum</label>
-            <p class="subtitle is-5" v-html="formatDateToString(item.startdate)"></p>
-
-            <label class="label">Eind datum</label>
-            <p class="subtitle is-5" v-html="formatDateToString(item.enddate)"></p>
-
-            <label class="label">Begin tijd</label>
-            <p class="subtitle is-5" v-html="item.startTime"></p>
-
-            <label class="label">Eind tijd</label>
-            <p class="subtitle is-5" v-html="item.endTime"></p>
-          </div>
-
-          <div class="column is-half infodata">
-            <label class="label">Kilometers begin</label>
-            <p class="subtitle is-5"><span v-html="item.kmstart"></span> km</p>
-
-            <label class="label">Kilometers eind</label>
-            <p class="subtitle is-5"><span v-html="item.kmend"></span> km</p>
-
-            <label class="label">Totaal aantal kilometers</label>
-            <p class="subtitle is-5"><span v-html="item.kmtotal"></span> km</p>
-
-            <label class="label">Postcode vertrek</label>
-            <p class="subtitle is-5" v-html="item.zipcodedeparture"></p>
-
-            <label class="label">Postcode bestemming</label>
-            <p class="subtitle is-5" v-html="item.zipcodedestination"></p>
-
-            <label class="label">Omschrijving/klant</label>
-            <p class="subtitle is-5" v-html="item.description"></p>
-          </div>
-        </div>
-
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-primary"v-on:click="e => onClickEditReservation(index)">Bewerken</button>
-        <button class="button" v-on:click="onClickCloseModal">Annuleren</button>
-      </footer>
-    </div>
-  </div>
+</div>
 
 <!-- Confirmation delete reservation -->
   <div class="modal js-modalconfirmdelete" :class="{ 'is-active': activeModalId === 'modal-delete' }">
@@ -338,9 +166,7 @@
       </footer>
     </div>
   </div>
-
 </div>
-
 </template>
 
 <script>
@@ -349,11 +175,21 @@ export default {
   name: 'app',
   data(){
     return {
+      activeIndex: -1,
+      activeColor: String,
+
+      // Editable Reserve Object
       startdate: '',
       enddate: '',
       startTime: '',
       endTime: '',
       id: 1,
+
+      kmstart: 0,
+      kmend: 0,
+      zipcodedeparture: '',
+      zipcodedestination: '',
+      description: '',
 
       kmtotal: 0,
 
@@ -401,111 +237,82 @@ export default {
     },
 
     saveButtonIsDisabled() {
-      const retVal = [];
-      for(var i =0; i < this.items.length; i++){
-        const item = this.items[i];
-
-        var currentDate = new Date();
-        var convertedcurrentdate = moment(this.formatDateToString(currentDate), "D/M/YYYY").unix();
-        var str = moment(this.formatDateToString(item.startdate), "D/M/YYYY").unix();
-        var str2 = moment(this.formatDateToString(item.enddate), "D/M/YYYY").unix();
-
-        var startt = item.startTime.split(':');
-        var endt = item.endTime.split(':');
-        var hours = (startt[0] * 60 * 60);
-        var minutes = (startt[1] * 60);
-
-        var hours2 = (endt[0] * 60 * 60);
-        var minutes2 = (endt[1] * 60);
-
-        var totalsecondsbegin = hours + minutes;
-        var totalsecondsend = hours2 + minutes2;
-
-        const kmEndIsBiggerThanKmstart = item.kmend >= item.kmstart;
-        const datesAreEqual = str == str2;
-        const beginTimeIsBeforeEndTime = totalsecondsbegin < totalsecondsend;
-        const beginAndEndDateAreAfterCurrentDate = str >= convertedcurrentdate && str2 >= convertedcurrentdate;
-        const endDateisAfterBeginDate = str2 > str;
-        const datesAreEqualAndBeginTimeIsBeforeEndTime = datesAreEqual && beginTimeIsBeforeEndTime;
-
-        const boolShouldBeDisabledOrNot = !(kmEndIsBiggerThanKmstart && beginAndEndDateAreAfterCurrentDate
-        && endDateisAfterBeginDate
-        || datesAreEqualAndBeginTimeIsBeforeEndTime);
-
-        retVal.push(boolShouldBeDisabledOrNot);
-      }
-      return retVal;
+      const kmEndIsBiggerThanKmstart = this.kmend >= this.kmstart;
+      return !(kmEndIsBiggerThanKmstart);
     },
+  },
 
-    reservationProgress() {
-      const retVal = [];
-      for(var i = 0; i < this.items.length; i++){
-        const item = this.items[i];
-        const berekening = String(
-          ( item.kmstart > 0 ? 20 : 0 ) +
-          ( item.kmend > 0 ? 20 : 0 ) +
-          ( item.zipcodedeparture.length > 0 ? 20 : 0 ) +
-          ( item.zipcodedestination.length > 0 ? 20 : 0 ) +
-          ( item.description.length > 0 ? 20 : 0 ) );
-          retVal.push(berekening);
+  watch: {
+    activeIndex(){
+  // if activeindex is valid, do the below
+      if(this.items[this.activeIndex] ){
+        this.startTime = this.items[this.activeIndex].startTime;
+        this.endTime = this.items[this.activeIndex].endTime;
+        this.startdate = this.items[this.activeIndex].startdate;
+        this.enddate = this.items[this.activeIndex].enddate;
+
+        this.kmstart = this.items[this.activeIndex].kmstart;
+        this.kmend = this.items[this.activeIndex].kmend;
+        this.zipcodedeparture = this.items[this.activeIndex].zipcodedeparture;
+        this.zipcodedestination = this.items[this.activeIndex].zipcodedestination;
+        this.description = this.items[this.activeIndex].description;
       }
-      return retVal;
     }
   },
 
   methods: {
-    formatDateToString: function(date){
-      var d = new Date(date);
-      var yyyy = d.getFullYear();
-      var mm = String(d.getMonth() + 1).padStart(2, '0');
-      var dd = String(d.getDate()).padStart(2, '0');
-      return  `${dd}-${mm}-${yyyy}`;
-    },
-
-    onClickReservateButton: function(event){
-      this.activeModalId = "modal-reservation";
+    changeColor: function(index){
+      this.activeIndex = index;
       return;
     },
 
-    onClickConfirmButton: function(event){
-      this.activeModalId = "";
+    formatDateToString: function(date){
+      var d = new Date(date);
+      var retVal;
+      if(d instanceof Date && !isNaN(d)){
+        var yyyy = d.getFullYear();
+        var mm = String(d.getMonth() + 1).padStart(2, '0');
+        var dd = String(d.getDate()).padStart(2, '0');
+        retVal = `${dd}-${mm}-${yyyy}`;
+      }else{
+        retVal = 'dd-mm-yyyy';
+      }
+      return retVal;
+    },
 
-      this.items.push({
-        id: this.id,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        startdate: this.startdate,
-        enddate: this.enddate,
+    onClickConfirmButton: function(event){
+      this.items[this.activeIndex].id = this.id;
+      this.items[this.activeIndex].startTime = this.startTime;
+      this.items[this.activeIndex].endTime = this.endTime;
+      this.items[this.activeIndex].startdate = this.startdate;
+      this.items[this.activeIndex].enddate = this.enddate;
+
+      return;
+    },
+
+    onClickSaveButton: function(event){
+      this.items[this.activeIndex].kmstart = this.kmstart;
+      this.items[this.activeIndex].kmend = this.kmend;
+      this.items[this.activeIndex].zipcodedeparture = this.zipcodedeparture;
+      this.items[this.activeIndex].zipcodedestination = this.zipcodedestination;
+      this.items[this.activeIndex].description = this.description;
+
+      return;
+    },
+
+    onClickAddReservationButton: function(event){
+      this.items.push ({
+        id: "",
+        startTime: "",
+        endTime: "",
+        startdate: "",
+        enddate: "",
         kmend: 0,
         kmstart: 0,
         zipcodedeparture: '',
         zipcodedestination: '',
         description: ''
       });
-
-      this.startTime = '';
-      this.endTime = '';
-      this.startdate = '';
-      this.enddate = '';
-      this.id++;
-
-      return;
-    },
-
-    onClickSaveButton: function(item, index){
-      this.activeModalId = "";
-      return;
-    },
-
-    onClickShowInfoReservation: function(item, index){
-      this.activeModalId = "modal-information-" + index;
-      item.kmtotal = item.kmend - item.kmstart;
-      return;
-    },
-
-    onClickEditReservation: function(index){
-      console.log("edit geklikt");
-      this.activeModalId = "modal-editinformation-" + index;
       return;
     },
 
@@ -524,19 +331,19 @@ export default {
       this.activeModalId = "";
       this.items.map((oItem, index) => {
         if(oItem.id === this.itemToDelete.id) {
-          this.items.splice(index, 1);
+          console.log("delete " + oItem.id + " " + this.itemToDelete.id);
+          console.log(oItem.id);
+          this.items.splice(this.activeIndex, 1);
         }
       });
       return;
     },
-
   },
 
   mounted(){
   // Get all "navbar-burger" elements
    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
    if ($navbarBurgers.length > 0) {
-
      $navbarBurgers.forEach( el => {
        el.addEventListener('click', () => {
          // Get the target from the "data-target" attribute
@@ -545,7 +352,6 @@ export default {
 
          el.classList.toggle('is-active');
          $target.classList.toggle('is-active');
-
        });
      });
    }

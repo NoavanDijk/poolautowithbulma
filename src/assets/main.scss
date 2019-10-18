@@ -7,8 +7,6 @@ $size-5: 1.1rem;
 
 #app {
   min-height: 100vh;
-  height: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,10 +22,7 @@ $size-5: 1.1rem;
 .homepicture{
   margin: 1em;
   width: 80%;
-  height: 100%;
-
   flex-grow: 1;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,6 +30,7 @@ $size-5: 1.1rem;
 
 .card{
   margin: 1em;
+  cursor: pointer;
 }
 
 .card-content{
@@ -43,10 +39,11 @@ $size-5: 1.1rem;
 
 .input{
   margin-bottom: 1em;
+  width: 50%
 }
 
-.level-item{
-  cursor: pointer;
+.input2{
+  width: 70%;
 }
 
 .fa-trash, .fa-edit{
@@ -54,14 +51,14 @@ $size-5: 1.1rem;
   margin-left: 1em;
 }
 
+.iconcard{
+  width: 30%;
+}
+
 .fa-plus-circle{
   font-size: 50px;
   display: flex;
   justify-content: center;
-}
-
-.textarea{
-  rows: "6";
 }
 
 .boxinfo{
@@ -90,6 +87,11 @@ $size-5: 1.1rem;
   height: 255px;
 }
 
+.containercards{
+  width: 85%;
+  border-radius: 6px;
+}
+
 .plus-line{
   stroke: #fff;
   fill: #fff;
@@ -108,6 +110,7 @@ $size-5: 1.1rem;
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin-top: 16%;
 }
 
 .fa-car{
@@ -117,4 +120,29 @@ $size-5: 1.1rem;
 .reservatebutton{
   display: flex;
   justify-content: flex-end;
+}
+
+.nextbutton, .savebutton, .reservatebutton{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 0.5em;
+}
+
+.active {
+  box-shadow: 0 0 6px rgba(71,180,255,1);
+}
+
+.box{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.kilometers, .zipcodes{
+  display: flex;
+}
+
+.textarea:not([rows]){
+  min-height: 100px;
 }
