@@ -34,7 +34,7 @@
 <!-- Add reservation -->
   <section class="section">
     <div class="container containercards">
-      <div class="card">
+      <div class="card addreservation">
         <header class="card-header">
           <p class="card-header-title">
             Voeg reservering toe
@@ -54,8 +54,8 @@
       </div>
 
 <!-- Reservation card -->
-      <div class="cards" v-for="(item, index) in items">
-        <div class="card" v-on:click="changeColor(index)" v-bind:class="{'active': index == activeIndex}" >
+      <div class="cards reservationcard" v-for="(item, index) in items">
+        <div class="card reservations" v-on:click="changeColor(index)" v-bind:class="{'active': index == activeIndex}">
           <header class="card-header">
             <p class="card-header-title">
               Reservering
@@ -102,24 +102,24 @@
 <!-- Second tile with warning -->
       <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
         <div class="tile is-child box">
-          <p><b>LET OP!</b><br /><br /> Onthoud je kilometerstanden! Deze moeten na je rit ingevoerd worden bij de volgende stap.</p>
+          <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
           <div class="nextbutton">
-            <button class="button is-primary">Volgende</button>
+            <button class="button is-primary" :disabled="!this.reservateButton[this.activeIndex]" v-on:click="onClickNextButton">Volgende</button>
           </div>
         </div>
       </div>
 
-<!-- Third tile with data like km and zipcodes -->
+<!-- Third tile with inputfields for km, zipcodes and description -->
       <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
         <div class="tile is-child box">
           <div class="kilometers">
             <div class="kmbegin">
               <label class="label">Kilometers begin</label>
-              <input class="input input2" type="number" placeholder="10" v-model="kmstart">
+              <input class="input input2" type="number" placeholder="10" :disabled="!this.nextButton[this.activeIndex]" v-model="kmstart">
             </div>
             <div class="kmeind">
               <label class="label">Kilometers eind</label>
-              <input class="input input2" type="number" placeholder="20" v-model="kmend">
+              <input class="input input2" type="number" placeholder="20" :disabled="!this.nextButton[this.activeIndex]" v-model="kmend">
             </div>
           </div>
 
@@ -127,20 +127,20 @@
             <div class="zipcodedeparture">
               <br />
               <label class="label">Postcode vertrek</label>
-              <input class="input input2" type="text" placeholder="1234 AB" v-model="zipcodedeparture">
+              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!this.nextButton[this.activeIndex]" v-model="zipcodedeparture">
             </div>
 
             <div class="zipcodedestination">
               <label class="label">Postcode bestemming</label>
-              <input class="input input2" type="text" placeholder="1234 AB" v-model="zipcodedestination">
+              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!this.nextButton[this.activeIndex]" v-model="zipcodedestination">
             </div>
           </div>
 
           <label class="label">Omschrijving/klant</label>
-          <textarea class="textarea" v-model="description"></textarea>
+          <textarea class="textarea" :disabled="!this.nextButton[this.activeIndex]" v-model="description"></textarea>
 
           <div class="savebutton">
-            <button class="button is-primary" :disabled="saveButtonIsDisabled" v-on:click="onClickSaveButton">Opslaan</button>
+            <button class="button is-primary" :disabled="!this.nextButton[this.activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
           </div>
         </div>
       </div>
@@ -178,6 +178,14 @@ export default {
       activeIndex: -1,
       activeColor: String,
 
+      reservateButton: [
+
+      ],
+
+      nextButton: [
+
+      ],
+
       // Editable Reserve Object
       startdate: '',
       enddate: '',
@@ -191,8 +199,6 @@ export default {
       zipcodedestination: '',
       description: '',
 
-      kmtotal: 0,
-
       activeModalId: '',
 
       items: [
@@ -203,7 +209,7 @@ export default {
   },
 
   computed: {
-    reservatebuttonIsDisabled() {
+    reservatebuttonIsDisabled(){
       var currentDate = new Date();
       var convertedcurrentdate = moment(this.formatDateToString(currentDate), "D/M/YYYY").unix();
       var str = moment(this.formatDateToString(this.startdate), "D/M/YYYY").unix();
@@ -236,16 +242,16 @@ export default {
         || datesAreEqualAndBeginTimeIsBeforeEndTime);
     },
 
-    saveButtonIsDisabled() {
+    saveButtonIsDisabled(){
       const kmEndIsBiggerThanKmstart = this.kmend >= this.kmstart;
       return !(kmEndIsBiggerThanKmstart);
-    },
+    }
   },
 
   watch: {
     activeIndex(){
   // if activeindex is valid, do the below
-      if(this.items[this.activeIndex] ){
+      if(this.items[this.activeIndex]){
         this.startTime = this.items[this.activeIndex].startTime;
         this.endTime = this.items[this.activeIndex].endTime;
         this.startdate = this.items[this.activeIndex].startdate;
@@ -287,6 +293,7 @@ export default {
       this.items[this.activeIndex].startdate = this.startdate;
       this.items[this.activeIndex].enddate = this.enddate;
 
+      this.reservateButton[this.activeIndex] = true;
       return;
     },
 
@@ -313,6 +320,14 @@ export default {
         zipcodedestination: '',
         description: ''
       });
+
+      this.reservateButton.push(false);
+      this.nextButton.push(false);
+      return;
+    },
+
+    onClickNextButton: function(event){
+      this.nextButton.splice(this.activeIndex, 1, true);
       return;
     },
 
@@ -331,8 +346,6 @@ export default {
       this.activeModalId = "";
       this.items.map((oItem, index) => {
         if(oItem.id === this.itemToDelete.id) {
-          console.log("delete " + oItem.id + " " + this.itemToDelete.id);
-          console.log(oItem.id);
           this.items.splice(this.activeIndex, 1);
         }
       });
