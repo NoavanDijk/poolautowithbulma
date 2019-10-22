@@ -11,7 +11,7 @@ $size-5: 1.1rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url('images/valleyachtergrond.jpg');
+  // background-image: url('images/valleyachtergrond.jpg');
   background-size: cover;
 }
 
@@ -151,7 +151,7 @@ $size-5: 1.1rem;
   padding-top: 0.5em;
 }
 
-.active {
+.active, .active2, .active3 {
   box-shadow: 0 0 6px rgba(71,180,255,1);
 }
 

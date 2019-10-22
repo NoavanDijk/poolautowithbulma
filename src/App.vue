@@ -83,8 +83,8 @@
     <div class="containertiles">
     <div class="tile is-vertical">
       <div class="tile">
-      <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
-        <div class="tile is-child box">
+      <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+        <div class="tile is-child box" v-for="(item, index) in items" v-bind:class="{'active': index == activeIndex}">
             <label class="label">Begin datum</label>
               <input class="input" type="date" v-model="startdate">
             <label class="label">Eind datum</label>
@@ -100,26 +100,26 @@
       </div>
 
 <!-- Second tile with warning -->
-      <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
-        <div class="tile is-child box">
+      <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+        <div class="tile is-child box" v-for="(item, index) in items" v-bind:class="{'active2': index == active2Index}">
           <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
           <div class="nextbutton">
-            <button class="button is-primary" :disabled="!this.reservateButton[this.activeIndex]" v-on:click="onClickNextButton">Volgende</button>
+            <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton">Volgende</button>
           </div>
         </div>
       </div>
 
 <!-- Third tile with inputfields for km, zipcodes and description -->
-      <div class="tile is-parent is-vertical is-3" v-if="this.items[this.activeIndex]">
-        <div class="tile is-child box">
+      <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+        <div class="tile is-child box" v-for="(item, index) in items" v-bind:class="{'active3': index == active3Index}">
           <div class="kilometers">
             <div class="kmbegin">
               <label class="label">Kilometers begin</label>
-              <input class="input input2" type="number" placeholder="10" :disabled="!this.nextButton[this.activeIndex]" v-model="kmstart">
+              <input class="input input2" type="number" placeholder="10" :disabled="!nextButton[activeIndex]" v-model="kmstart">
             </div>
             <div class="kmeind">
               <label class="label">Kilometers eind</label>
-              <input class="input input2" type="number" placeholder="20" :disabled="!this.nextButton[this.activeIndex]" v-model="kmend">
+              <input class="input input2" type="number" placeholder="20" :disabled="!nextButton[activeIndex]" v-model="kmend">
             </div>
           </div>
 
@@ -127,20 +127,20 @@
             <div class="zipcodedeparture">
               <br />
               <label class="label">Postcode vertrek</label>
-              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!this.nextButton[this.activeIndex]" v-model="zipcodedeparture">
+              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedeparture">
             </div>
 
             <div class="zipcodedestination">
               <label class="label">Postcode bestemming</label>
-              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!this.nextButton[this.activeIndex]" v-model="zipcodedestination">
+              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedestination">
             </div>
           </div>
 
           <label class="label">Omschrijving/klant</label>
-          <textarea class="textarea" :disabled="!this.nextButton[this.activeIndex]" v-model="description"></textarea>
+          <textarea class="textarea" :disabled="!nextButton[activeIndex]" v-model="description"></textarea>
 
           <div class="savebutton">
-            <button class="button is-primary" :disabled="!this.nextButton[this.activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
+            <button class="button is-primary" :disabled="!nextButton[activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
           </div>
         </div>
       </div>
@@ -176,7 +176,8 @@ export default {
   data(){
     return {
       activeIndex: -1,
-      activeColor: String,
+      active2Index: -1,
+      active3Index: -1,
 
       reservateButton: [
 
@@ -272,6 +273,16 @@ export default {
       return;
     },
 
+    changeColor2: function(index){
+      this.active2Index = index;
+      return;
+    },
+
+    changeColor3: function(index){
+      this.active3Index = index;
+      return;
+    },
+
     formatDateToString: function(date){
       var d = new Date(date);
       var retVal;
@@ -294,6 +305,7 @@ export default {
       this.items[this.activeIndex].enddate = this.enddate;
 
       this.reservateButton[this.activeIndex] = true;
+      this.changeColor2(this.items.length -1);
       return;
     },
 
@@ -323,11 +335,13 @@ export default {
 
       this.reservateButton.push(false);
       this.nextButton.push(false);
+      this.changeColor(this.items.length -1);
       return;
     },
 
     onClickNextButton: function(event){
       this.nextButton.splice(this.activeIndex, 1, true);
+      this.changeColor3(this.items.length -1);
       return;
     },
 
