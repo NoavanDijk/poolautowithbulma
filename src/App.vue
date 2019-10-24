@@ -55,7 +55,7 @@
 
 <!-- Reservation card -->
       <div class="cards reservationcard" v-for="(item, index) in items">
-        <div class="card reservations" v-on:click="changeColor(index)" v-bind:class="{'active': index == activeIndex}">
+        <div class="card reservations" v-on:click="changeColor(index)" v-bind:class="{active: activeIndex === index}">
           <header class="card-header">
             <p class="card-header-title">
               Reservering
@@ -84,7 +84,7 @@
     <div class="tile is-vertical">
       <div class="tile">
       <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-        <div class="tile is-child box" v-for="(item, index) in items" v-bind:class="{'active': index == activeIndex}">
+        <div class="tile is-child box">
             <label class="label">Begin datum</label>
               <input class="input" type="date" v-model="startdate">
             <label class="label">Eind datum</label>
@@ -94,24 +94,24 @@
             <label class="label">Eind tijd</label>
               <input class="input" type="time" v-model="endTime">
             <div class="reservatebutton">
-              <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton">Reserveren</button>
+              <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton(index); changeColor2(index);">Reserveren</button>
             </div>
         </div>
       </div>
 
 <!-- Second tile with warning -->
       <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-        <div class="tile is-child box" v-for="(item, index) in items" v-bind:class="{'active2': index == active2Index}">
+        <div class="tile is-child box">
           <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
           <div class="nextbutton">
-            <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton">Volgende</button>
+            <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton(); changeColor3(index);">Volgende</button>
           </div>
         </div>
       </div>
 
 <!-- Third tile with inputfields for km, zipcodes and description -->
       <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-        <div class="tile is-child box" v-for="(item, index) in items" v-bind:class="{'active3': index == active3Index}">
+        <div class="tile is-child box">
           <div class="kilometers">
             <div class="kmbegin">
               <label class="label">Kilometers begin</label>
@@ -176,8 +176,6 @@ export default {
   data(){
     return {
       activeIndex: -1,
-      active2Index: -1,
-      active3Index: -1,
 
       reservateButton: [
 
@@ -273,16 +271,6 @@ export default {
       return;
     },
 
-    changeColor2: function(index){
-      this.active2Index = index;
-      return;
-    },
-
-    changeColor3: function(index){
-      this.active3Index = index;
-      return;
-    },
-
     formatDateToString: function(date){
       var d = new Date(date);
       var retVal;
@@ -305,7 +293,6 @@ export default {
       this.items[this.activeIndex].enddate = this.enddate;
 
       this.reservateButton[this.activeIndex] = true;
-      this.changeColor2(this.items.length -1);
       return;
     },
 
@@ -341,7 +328,6 @@ export default {
 
     onClickNextButton: function(event){
       this.nextButton.splice(this.activeIndex, 1, true);
-      this.changeColor3(this.items.length -1);
       return;
     },
 

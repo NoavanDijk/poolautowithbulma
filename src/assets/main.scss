@@ -47,6 +47,7 @@ $size-5: 1.1rem;
   cursor: pointer;
   margin: 1em;
   flex-shrink: 0;
+  margin-left: 0.1em;
 }
 
 .card-content{
@@ -98,9 +99,9 @@ $size-5: 1.1rem;
 .container{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  grid-gap: 0.5em;
   background-color: white;
   height: 255px;
+  border: solid 1px #dbdbdb;
 }
 
 .containercards{
