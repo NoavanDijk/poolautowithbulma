@@ -15,20 +15,20 @@
     </div>
 
     <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <a class="navbar-item">
-              Home
-            </a>
-            <a class="navbar-item">
-              Auto reserveren
-            </a>
-            <a class="navbar-item">
-              Reserveringen
-            </a>
-          </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <a class="navbar-item">
+            Home
+          </a>
+          <a class="navbar-item">
+            Auto reserveren
+          </a>
+          <a class="navbar-item">
+            Reserveringen
+          </a>
         </div>
       </div>
+    </div>
   </nav>
 
 <!-- Add reservation -->
@@ -79,75 +79,95 @@
   </section>
 
 <!-- First tile with date and time -->
-  <div class="tile is-ancestor tilebox">
+  <div class="tile is-ancestor">
     <div class="containertiles">
-    <div class="tile is-vertical">
-      <div class="tile">
-      <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-        <div class="tile is-child box">
-            <label class="label">Begin datum</label>
-              <input class="input" type="date" v-model="startdate">
-            <label class="label">Eind datum</label>
-              <input class="input" type="date" v-model="enddate">
-            <label class="label">Begin tijd</label>
-              <input class="input" type="time" v-model="startTime">
-            <label class="label">Eind tijd</label>
-              <input class="input" type="time" v-model="endTime">
-            <div class="reservatebutton">
-              <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton(index); changeColor2(index);">Reserveren</button>
+      <div class="tile is-vertical">
+        <div class="tile">
+          <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+            <div class="tile is-child box">
+              <label class="label">Begin datum</label>
+                <input class="input" type="date" v-model="startdate">
+              <label class="label">Eind datum</label>
+                <input class="input" type="date" v-model="enddate">
+              <label class="label">Begin tijd</label>
+                <input class="input" type="time" v-model="startTime">
+              <label class="label">Eind tijd</label>
+                <input class="input" type="time" v-model="endTime">
+              <div class="reservatebutton">
+                <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton(index); changeColor2(index);">Reserveren</button>
+              </div>
             </div>
-        </div>
-      </div>
+          </div>
 
-<!-- Second tile with warning -->
-      <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-        <div class="tile is-child box">
-          <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
-          <div class="nextbutton">
-            <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton(); changeColor3(index);">Volgende</button>
+    <!-- Second tile with warning -->
+          <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+            <div class="tile is-child box">
+              <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
+              <div class="nextbutton">
+                <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton(); changeColor3(index);">Volgende</button>
+              </div>
+            </div>
+          </div>
+
+    <!-- Third tile with inputfields for km, zipcodes and description -->
+          <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+            <div class="tile is-child box">
+              <div class="kilometers">
+                <div class="kmbegin">
+                  <label class="label">Kilometers begin</label>
+                  <input class="input input2" type="number" placeholder="10" :disabled="!nextButton[activeIndex]" v-model="kmstart">
+                </div>
+                <div class="kmeind">
+                  <label class="label">Kilometers eind</label>
+                  <input class="input input2" type="number" placeholder="20" :disabled="!nextButton[activeIndex]" v-model="kmend">
+                </div>
+              </div>
+
+              <div class="zipcodes">
+                <div class="zipcodedeparture">
+                  <br />
+                  <label class="label">Postcode vertrek</label>
+                  <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedeparture">
+                </div>
+
+                <div class="zipcodedestination">
+                  <label class="label">Postcode bestemming</label>
+                  <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedestination">
+                </div>
+              </div>
+
+              <label class="label">Omschrijving/klant</label>
+              <textarea class="textarea" :disabled="!nextButton[activeIndex]" v-model="description"></textarea>
+
+              <div class="savebutton">
+                <button class="button is-primary" :disabled="!nextButton[activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-<!-- Third tile with inputfields for km, zipcodes and description -->
-      <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-        <div class="tile is-child box">
-          <div class="kilometers">
-            <div class="kmbegin">
-              <label class="label">Kilometers begin</label>
-              <input class="input input2" type="number" placeholder="10" :disabled="!nextButton[activeIndex]" v-model="kmstart">
-            </div>
-            <div class="kmeind">
-              <label class="label">Kilometers eind</label>
-              <input class="input input2" type="number" placeholder="20" :disabled="!nextButton[activeIndex]" v-model="kmend">
-            </div>
-          </div>
-
-          <div class="zipcodes">
-            <div class="zipcodedeparture">
-              <br />
-              <label class="label">Postcode vertrek</label>
-              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedeparture">
-            </div>
-
-            <div class="zipcodedestination">
-              <label class="label">Postcode bestemming</label>
-              <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedestination">
-            </div>
-          </div>
-
-          <label class="label">Omschrijving/klant</label>
-          <textarea class="textarea" :disabled="!nextButton[activeIndex]" v-model="description"></textarea>
-
-          <div class="savebutton">
-            <button class="button is-primary" :disabled="!nextButton[activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
-          </div>
-        </div>
-      </div>
-    </div>
     </div>
   </div>
-</div>
+
+  <div class="section stepindicator">
+    <ul class="steps is-medium">
+      <li class="steps-segment">
+        <span class="steps-marker is-primary">1</span>
+        <div class="steps-content">
+        </div>
+      </li>
+      <li class="steps-segment is-active">
+        <span class="steps-marker is-primary">2</span>
+        <div class="steps-content">
+        </div>
+      </li>
+      <li class="steps-segment">
+        <span class="steps-marker is-primary">3</span>
+        <div class="steps-content">
+        </div>
+      </li>
+    </ul>
+  </div>
 
 <!-- Confirmation delete reservation -->
   <div class="modal js-modalconfirmdelete" :class="{ 'is-active': activeModalId === 'modal-delete' }">

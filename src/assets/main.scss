@@ -4,9 +4,9 @@ $title-family: "Merriweather";
 $size-5: 1.1rem;
 
 @import "~bulma/bulma";
+@import 'bulma-steps-component/bulma-steps.sass';
 
 #app {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -168,4 +168,10 @@ $size-5: 1.1rem;
 
 .textarea:not([rows]){
   min-height: 100px;
+}
+
+.stepindicator {
+  width: 42%;
+  padding: 0;
+  margin: 0;
 }
