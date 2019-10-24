@@ -94,7 +94,7 @@
               <label class="label">Eind tijd</label>
                 <input class="input" type="time" v-model="endTime">
               <div class="reservatebutton">
-                <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton(index); changeColor2(index);">Reserveren</button>
+                <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton">Reserveren</button>
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@
             <div class="tile is-child box">
               <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
               <div class="nextbutton">
-                <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton(); changeColor3(index);">Volgende</button>
+                <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton">Volgende</button>
               </div>
             </div>
           </div>
@@ -150,20 +150,26 @@
   </div>
 
   <div class="section stepindicator">
-    <ul class="steps is-medium">
-      <li class="steps-segment">
+    <ul class="steps is-medium has-content-centered">
+      <li class="steps-segment" v-bind:class="{'is-active': stepIndicator[activeIndex]}">
         <span class="steps-marker is-primary">1</span>
         <div class="steps-content">
+          <p>Stap 1</p>
+          <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
         </div>
       </li>
-      <li class="steps-segment is-active">
+      <li class="steps-segment" v-bind:class="{'is-active': stepIndicator1[activeIndex]}">
         <span class="steps-marker is-primary">2</span>
         <div class="steps-content">
+          <p>Stap 2</p>
+          <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
         </div>
       </li>
-      <li class="steps-segment">
+      <li class="steps-segment" v-bind:class="{'is-active': stepIndicator2[activeIndex]}">
         <span class="steps-marker is-primary">3</span>
         <div class="steps-content">
+          <p>Stap 3</p>
+          <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
         </div>
       </li>
     </ul>
@@ -196,6 +202,18 @@ export default {
   data(){
     return {
       activeIndex: -1,
+
+      stepIndicator: [
+
+      ],
+
+      stepIndicator1: [
+
+      ],
+
+      stepIndicator2: [
+
+      ],
 
       reservateButton: [
 
@@ -313,6 +331,10 @@ export default {
       this.items[this.activeIndex].enddate = this.enddate;
 
       this.reservateButton[this.activeIndex] = true;
+
+      this.stepIndicator.splice(this.activeIndex, 1, false);
+      this.stepIndicator1.splice(this.activeIndex, 1, true);
+      this.stepIndicator2.splice(this.activeIndex, 1, false);
       return;
     },
 
@@ -343,11 +365,19 @@ export default {
       this.reservateButton.push(false);
       this.nextButton.push(false);
       this.changeColor(this.items.length -1);
+
+      this.stepIndicator.push(true);
+      this.stepIndicator1.push(false);
+      this.stepIndicator2.push(false);
       return;
     },
 
     onClickNextButton: function(event){
       this.nextButton.splice(this.activeIndex, 1, true);
+
+      this.stepIndicator.splice(this.activeIndex, 1, false);
+      this.stepIndicator1.splice(this.activeIndex, 1, false);
+      this.stepIndicator2.splice(this.activeIndex, 1, true);
       return;
     },
 
