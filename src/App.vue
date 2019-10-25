@@ -150,19 +150,23 @@
   </div>
 
   <div class="section stepindicator">
+    <button type="button" name="button" v-on:click="show = !show"></button>
+
     <ul class="steps is-medium has-content-centered">
       <li class="steps-segment" v-bind:class="{'is-active': stepIndicator[activeIndex]}">
         <span class="steps-marker is-primary">1</span>
         <div class="steps-content">
           <p>Stap 1</p>
-          <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
+          <transition name="fade">
+            <img v-if="show" src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
+          </transition>
         </div>
       </li>
       <li class="steps-segment" v-bind:class="{'is-active': stepIndicator1[activeIndex]}">
         <span class="steps-marker is-primary">2</span>
         <div class="steps-content">
           <p>Stap 2</p>
-          <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
+          <!-- <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto"> -->
         </div>
       </li>
       <li class="steps-segment" v-bind:class="{'is-active': stepIndicator2[activeIndex]}">
@@ -202,6 +206,8 @@ export default {
   data(){
     return {
       activeIndex: -1,
+
+      show: true,
 
       stepIndicator: [
 

@@ -173,9 +173,13 @@ $size-5: 1.1rem;
 .stepindicator {
   width: 62%;
   padding: 0;
-  margin: 0;
 }
 
 .poolauto{
   width: 5rem;
+}
+
+.fade-enter, .fade-leave-active{
+  transform: translateX(395px);
+  transition: all 2.5s ;
 }
