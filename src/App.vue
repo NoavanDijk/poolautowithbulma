@@ -71,7 +71,7 @@
             </div>
           </div>
           <footer class="card-footer">
-            <i class="fas fa-car"></i>
+            <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolautocard">
           </footer>
         </div>
       </div>
@@ -149,31 +149,27 @@
     </div>
   </div>
 
-  <div class="section stepindicator">
-    <button type="button" name="button" v-on:click="show = !show"></button>
-
+  <div class="section stepindicator" v-for="(item, index) in items">
     <ul class="steps is-medium has-content-centered">
       <li class="steps-segment" v-bind:class="{'is-active': stepIndicator[activeIndex]}">
         <span class="steps-marker is-primary">1</span>
         <div class="steps-content">
           <p>Stap 1</p>
-          <transition name="fade">
-            <img v-if="show" src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
-          </transition>
+            <div class="carstep1">
+              <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
+            </div>
         </div>
       </li>
       <li class="steps-segment" v-bind:class="{'is-active': stepIndicator1[activeIndex]}">
         <span class="steps-marker is-primary">2</span>
         <div class="steps-content">
           <p>Stap 2</p>
-          <!-- <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto"> -->
         </div>
       </li>
       <li class="steps-segment" v-bind:class="{'is-active': stepIndicator2[activeIndex]}">
         <span class="steps-marker is-primary">3</span>
         <div class="steps-content">
           <p>Stap 3</p>
-          <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
         </div>
       </li>
     </ul>
@@ -341,6 +337,10 @@ export default {
       this.stepIndicator.splice(this.activeIndex, 1, false);
       this.stepIndicator1.splice(this.activeIndex, 1, true);
       this.stepIndicator2.splice(this.activeIndex, 1, false);
+
+      var movingcar = document.querySelector(".carstep1");
+      console.log("auto rijden");
+      movingcar.classList.add('drivingcar');
       return;
     },
 
@@ -384,6 +384,10 @@ export default {
       this.stepIndicator.splice(this.activeIndex, 1, false);
       this.stepIndicator1.splice(this.activeIndex, 1, false);
       this.stepIndicator2.splice(this.activeIndex, 1, true);
+
+      var movingcar = document.querySelector(".carstep1");
+      console.log("auto rijden2");
+      movingcar.classList.add('drivingcar2');
       return;
     },
 
@@ -407,6 +411,13 @@ export default {
       });
       return;
     },
+
+    // startAnimation: function(event){
+    //   var movingcar = document.querySelector(".carstep1");
+    //   console.log("auto rijden");
+    //   movingcar.classList.add('drivingcar');
+    //   return;
+    // }
   },
 
   mounted(){

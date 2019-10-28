@@ -136,10 +136,6 @@ $size-5: 1.1rem;
   margin-top: 16%;
 }
 
-.fa-car{
-  font-size: 50px;
-}
-
 .reservatebutton{
   display: flex;
   justify-content: flex-end;
@@ -152,7 +148,7 @@ $size-5: 1.1rem;
   padding-top: 0.5em;
 }
 
-.active, .active2, .active3 {
+.active{
   box-shadow: 0 0 6px rgba(71,180,255,1);
 }
 
@@ -170,16 +166,57 @@ $size-5: 1.1rem;
   min-height: 100px;
 }
 
-.stepindicator {
+.stepindicator{
   width: 62%;
   padding: 0;
 }
 
-.poolauto{
+.poolauto, .poolautocard{
   width: 5rem;
+  margin: 0.4em;
 }
 
-.fade-enter, .fade-leave-active{
-  transform: translateX(395px);
-  transition: all 2.5s ;
+.carstep1{
+  left: 36%;
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.drivingcar{
+  -webkit-animation-name: drivingcar; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+  animation-name: drivingcar;
+  animation-duration: 4s;
+  animation-fill-mode: forwards; /* Laat de auto staan op het einde */
+}
+
+@keyframes drivingcar{
+  0%   {left:150px;}
+  100% {left:540px;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes drivingcar {
+  0%   {left:150px;}
+  100% {left:540px;}
+}
+
+.drivingcar2{
+  -webkit-animation-name: drivingcar2; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+  animation-name: drivingcar2;
+  animation-duration: 4s;
+  animation-fill-mode: forwards; /* Laat de auto staan op het einde */
+}
+
+@keyframes drivingcar2{
+  0%   {left:540px;}
+  100% {left:930px;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes drivingcar2 {
+  0%   {left:400px;}
+  100% {left:700px;}
 }
