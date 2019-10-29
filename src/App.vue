@@ -1,198 +1,198 @@
 <template>
-<div id="app">
-  <!-- Navbar -->
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="https://www.thevalley.nl/">
-        <img id="logonavbar" src="./assets/images/logo.svg" width="92" height="28">
-      </a>
+  <div id="app">
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://www.thevalley.nl/">
+          <img id="logonavbar" src="./assets/images/logo.svg" width="92" height="28">
+        </a>
 
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hiddenvue="true"></span>
-      </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <a class="navbar-item">
-            Home
-          </a>
-          <a class="navbar-item">
-            Auto reserveren
-          </a>
-          <a class="navbar-item">
-            Reserveringen
-          </a>
-        </div>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hiddenvue="true"></span>
+        </a>
       </div>
-    </div>
-  </nav>
 
-<!-- Add reservation -->
-  <section class="section">
-    <div class="container containercards">
-      <div class="card addreservation">
-        <header class="card-header">
-          <p class="card-header-title">
-            Voeg reservering toe
-          </p>
-        </header>
-        <div class="card-content">
-          <div class="content">
-            <div class="plus" v-on:click="onClickAddReservationButton">
-              <svg id="icon-plus" class="icon-plus" viewBox="0 0 32 32">
-      					<path d="M0 0h32v32h-32v-32z" class="plus-bg"></path>
-      					<path d="M7.406 15.429h17.189v1.143h-17.189v-1.143z" class="plus-line"></path>
-      					<path d="M15.429 7.406h1.143v17.189h-1.143v-17.189z" class="plus-line"></path>
-      				</svg>
-            </div>
+      <div id="navbarBasic" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <a class="navbar-item">
+              Home
+            </a>
+            <a class="navbar-item">
+              Auto reserveren
+            </a>
+            <a class="navbar-item">
+              Reserveringen
+            </a>
           </div>
         </div>
       </div>
+    </nav>
 
-<!-- Reservation card -->
-      <div class="cards reservationcard" v-for="(item, index) in items">
-        <div class="card reservations" v-on:click="changeColor(index)" v-bind:class="{active: activeIndex === index}">
+  <!-- Add reservation -->
+    <section class="section cardssection">
+      <div class="container containercards">
+        <div class="card addreservation">
           <header class="card-header">
             <p class="card-header-title">
-              Reservering
+              Voeg reservering toe
             </p>
           </header>
           <div class="card-content">
             <div class="content">
-              <p v-html="formatDateToString(item.startdate)"></p>
-              <br />
-              <div class="iconcard" v-on:click="onDeleteReservation(item)">
-                <i class="fas fa-trash"></i>
+              <div class="plus" v-on:click="onClickAddReservationButton">
+                <svg id="icon-plus" class="icon-plus" viewBox="0 0 32 32">
+        					<path d="M0 0h32v32h-32v-32z" class="plus-bg"></path>
+        					<path d="M7.406 15.429h17.189v1.143h-17.189v-1.143z" class="plus-line"></path>
+        					<path d="M15.429 7.406h1.143v17.189h-1.143v-17.189z" class="plus-line"></path>
+        				</svg>
               </div>
             </div>
           </div>
-          <footer class="card-footer">
-            <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolautocard">
-          </footer>
         </div>
-      </div>
-    </div>
-  </section>
 
-<!-- First tile with date and time -->
-  <div class="tile is-ancestor">
-    <div class="containertiles">
-      <div class="tile is-vertical">
-        <div class="tile">
-          <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-            <div class="tile is-child box">
-              <label class="label">Begin datum</label>
-                <input class="input" type="date" v-model="startdate">
-              <label class="label">Eind datum</label>
-                <input class="input" type="date" v-model="enddate">
-              <label class="label">Begin tijd</label>
-                <input class="input" type="time" v-model="startTime">
-              <label class="label">Eind tijd</label>
-                <input class="input" type="time" v-model="endTime">
-              <div class="reservatebutton">
-                <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton">Reserveren</button>
+  <!-- Reservation card -->
+        <div class="cards reservationcard" v-for="(item, index) in items">
+          <div class="card reservations" v-on:click="changeColor(index)" v-bind:class="{'active': activeIndex === index}">
+            <header class="card-header">
+              <p class="card-header-title">
+                Reservering
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <p v-html="formatDateToString(item.startdate)"></p>
+                <br />
+                <div class="iconcard" v-on:click="onDeleteReservation(item)">
+                  <i class="fas fa-trash"></i>
+                </div>
               </div>
             </div>
-          </div>
-
-    <!-- Second tile with warning -->
-          <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-            <div class="tile is-child box">
-              <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
-              <div class="nextbutton">
-                <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton">Volgende</button>
-              </div>
-            </div>
-          </div>
-
-    <!-- Third tile with inputfields for km, zipcodes and description -->
-          <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
-            <div class="tile is-child box">
-              <div class="kilometers">
-                <div class="kmbegin">
-                  <label class="label">Kilometers begin</label>
-                  <input class="input input2" type="number" placeholder="10" :disabled="!nextButton[activeIndex]" v-model="kmstart">
-                </div>
-                <div class="kmeind">
-                  <label class="label">Kilometers eind</label>
-                  <input class="input input2" type="number" placeholder="20" :disabled="!nextButton[activeIndex]" v-model="kmend">
-                </div>
-              </div>
-
-              <div class="zipcodes">
-                <div class="zipcodedeparture">
-                  <br />
-                  <label class="label">Postcode vertrek</label>
-                  <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedeparture">
-                </div>
-
-                <div class="zipcodedestination">
-                  <label class="label">Postcode bestemming</label>
-                  <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedestination">
-                </div>
-              </div>
-
-              <label class="label">Omschrijving/klant</label>
-              <textarea class="textarea" :disabled="!nextButton[activeIndex]" v-model="description"></textarea>
-
-              <div class="savebutton">
-                <button class="button is-primary" :disabled="!nextButton[activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
-              </div>
-            </div>
+            <footer class="card-footer">
+              <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolautocard">
+            </footer>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="section stepindicator" v-for="(item, index) in items">
-    <ul class="steps is-medium has-content-centered">
-      <li class="steps-segment" v-bind:class="{'is-active': stepIndicator[activeIndex]}">
-        <span class="steps-marker is-primary">1</span>
-        <div class="steps-content">
-          <p>Stap 1</p>
-            <div class="carstep1">
-              <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
+  <!-- First tile with date and time -->
+    <div class="tile is-ancestor">
+      <div class="containertiles">
+        <div class="tile is-vertical">
+          <div class="tile">
+            <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+              <div class="tile is-child box">
+                <label class="label">Begin datum</label>
+                  <input class="input" type="date" v-model="startdate">
+                <label class="label">Eind datum</label>
+                  <input class="input" type="date" v-model="enddate">
+                <label class="label">Begin tijd</label>
+                  <input class="input" type="time" v-model="startTime">
+                <label class="label">Eind tijd</label>
+                  <input class="input" type="time" v-model="endTime">
+                <div class="reservatebutton">
+                  <button class="button is-primary" :disabled="reservatebuttonIsDisabled" v-on:click="onClickConfirmButton">Reserveren</button>
+                </div>
+              </div>
             </div>
-        </div>
-      </li>
-      <li class="steps-segment" v-bind:class="{'is-active': stepIndicator1[activeIndex]}">
-        <span class="steps-marker is-primary">2</span>
-        <div class="steps-content">
-          <p>Stap 2</p>
-        </div>
-      </li>
-      <li class="steps-segment" v-bind:class="{'is-active': stepIndicator2[activeIndex]}">
-        <span class="steps-marker is-primary">3</span>
-        <div class="steps-content">
-          <p>Stap 3</p>
-        </div>
-      </li>
-    </ul>
-  </div>
 
-<!-- Confirmation delete reservation -->
-  <div class="modal js-modalconfirmdelete" :class="{ 'is-active': activeModalId === 'modal-delete' }">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title is-family-secondary">Verwijderen</p>
-        <button class="delete" aria-label="close" v-on:click="onClickCloseModal"></button>
-      </header>
-      <section class="modal-card-body">
-        <p>Weet u zeker dat u dit wilt verwijderen? Dit kan niet ongedaan worden gemaakt.</p>
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-primary" v-on:click="onClickDeleteReservation">Ja</button>
-        <button class="button" v-on:click="onClickCloseModal">Nee</button>
-      </footer>
+      <!-- Second tile with warning -->
+            <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+              <div class="tile is-child box">
+                <p><b>LET OP!</b><br /><br />Onthoud je kilometerstanden! Deze moeten na je rit worden ingevoerd bij de volgende stap.</p>
+                <div class="nextbutton">
+                  <button class="button is-primary" :disabled="!reservateButton[activeIndex]" v-on:click="onClickNextButton">Volgende</button>
+                </div>
+              </div>
+            </div>
+
+      <!-- Third tile with inputfields for km, zipcodes and description -->
+            <div class="tile is-parent is-vertical is-3" v-if="items[activeIndex]">
+              <div class="tile is-child box">
+                <div class="kilometers">
+                  <div class="kmbegin">
+                    <label class="label">Kilometers begin</label>
+                    <input class="input input2" type="number" placeholder="10" :disabled="!nextButton[activeIndex]" v-model="kmstart">
+                  </div>
+                  <div class="kmeind">
+                    <label class="label">Kilometers eind</label>
+                    <input class="input input2" type="number" placeholder="20" :disabled="!nextButton[activeIndex]" v-model="kmend">
+                  </div>
+                </div>
+
+                <div class="zipcodes">
+                  <div class="zipcodedeparture">
+                    <br />
+                    <label class="label">Postcode vertrek</label>
+                    <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedeparture">
+                  </div>
+
+                  <div class="zipcodedestination">
+                    <label class="label">Postcode bestemming</label>
+                    <input class="input input2" type="text" placeholder="1234 AB" :disabled="!nextButton[activeIndex]" v-model="zipcodedestination">
+                  </div>
+                </div>
+
+                <label class="label">Omschrijving/klant</label>
+                <textarea class="textarea" :disabled="!nextButton[activeIndex]" v-model="description"></textarea>
+
+                <div class="savebutton">
+                  <button class="button is-primary" :disabled="!nextButton[activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section stepindicator" v-if="items[activeIndex]">
+      <ul class="steps is-medium has-content-centered">
+        <li class="steps-segment" v-bind:class="{'is-active': stepIndicator[activeIndex]}">
+          <span class="steps-marker is-primary">1</span>
+          <div class="steps-content">
+            <p>Stap 1</p>
+              <div class="carstep1" v-bind:class="{'drivingcar': drivingCar[activeIndex], 'drivingcar2': drivingCar2[activeIndex]}">
+                <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolauto">
+              </div>
+          </div>
+        </li>
+        <li class="steps-segment" v-bind:class="{'is-active': stepIndicator1[activeIndex]}">
+          <span class="steps-marker is-primary">2</span>
+          <div class="steps-content">
+            <p>Stap 2</p>
+          </div>
+        </li>
+        <li class="steps-segment" v-bind:class="{'is-active': stepIndicator2[activeIndex]}">
+          <span class="steps-marker is-primary">3</span>
+          <div class="steps-content">
+            <p>Stap 3</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  <!-- Confirmation delete reservation -->
+    <div class="modal js-modalconfirmdelete" :class="{'is-active': activeModalId === 'modal-delete'}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title is-family-secondary">Verwijderen</p>
+          <button class="delete" aria-label="close" v-on:click="onClickCloseModal"></button>
+        </header>
+        <section class="modal-card-body">
+          <p>Weet u zeker dat u dit wilt verwijderen? Dit kan niet ongedaan worden gemaakt.</p>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-primary" v-on:click="onClickDeleteReservation">Ja</button>
+          <button class="button" v-on:click="onClickCloseModal">Nee</button>
+        </footer>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -203,8 +203,6 @@ export default {
     return {
       activeIndex: -1,
 
-      show: true,
-
       stepIndicator: [
 
       ],
@@ -214,6 +212,14 @@ export default {
       ],
 
       stepIndicator2: [
+
+      ],
+
+      drivingCar: [
+
+      ],
+
+      drivingCar2: [
 
       ],
 
@@ -244,7 +250,6 @@ export default {
 
       ]
     };
-
   },
 
   computed: {
@@ -254,13 +259,13 @@ export default {
       var str = moment(this.formatDateToString(this.startdate), "D/M/YYYY").unix();
       var str2 = moment(this.formatDateToString(this.enddate), "D/M/YYYY").unix();
 
-      var startt = this.startTime.split(':');
-      var endt = this.endTime.split(':');
-      var hours = (startt[0] * 60 * 60);
-      var minutes = (startt[1] * 60);
+      var starttime = this.startTime.split(':');
+      var endtime = this.endTime.split(':');
+      var hours = (starttime[0] * 60 * 60);
+      var minutes = (starttime[1] * 60);
 
-      var hours2 = (endt[0] * 60 * 60);
-      var minutes2 = (endt[1] * 60);
+      var hours2 = (endtime[0] * 60 * 60);
+      var minutes2 = (endtime[1] * 60);
 
       var totalsecondsbegin = hours + minutes;
       var totalsecondsend = hours2 + minutes2;
@@ -339,8 +344,10 @@ export default {
       this.stepIndicator2.splice(this.activeIndex, 1, false);
 
       var movingcar = document.querySelector(".carstep1");
-      console.log("auto rijden");
       movingcar.classList.add('drivingcar');
+
+      this.drivingCar.splice(this.activeIndex, 1, true);
+      this.drivingCar2.splice(this.activeIndex, 1, false);
       return;
     },
 
@@ -350,7 +357,6 @@ export default {
       this.items[this.activeIndex].zipcodedeparture = this.zipcodedeparture;
       this.items[this.activeIndex].zipcodedestination = this.zipcodedestination;
       this.items[this.activeIndex].description = this.description;
-
       return;
     },
 
@@ -375,6 +381,9 @@ export default {
       this.stepIndicator.push(true);
       this.stepIndicator1.push(false);
       this.stepIndicator2.push(false);
+
+      this.drivingCar.push(false);
+      this.drivingCar2.push(false);
       return;
     },
 
@@ -386,8 +395,10 @@ export default {
       this.stepIndicator2.splice(this.activeIndex, 1, true);
 
       var movingcar = document.querySelector(".carstep1");
-      console.log("auto rijden2");
       movingcar.classList.add('drivingcar2');
+
+      this.drivingCar.splice(this.activeIndex, 1, false);
+      this.drivingCar2.splice(this.activeIndex, 1, true);
       return;
     },
 
@@ -410,20 +421,13 @@ export default {
         }
       });
       return;
-    },
-
-    // startAnimation: function(event){
-    //   var movingcar = document.querySelector(".carstep1");
-    //   console.log("auto rijden");
-    //   movingcar.classList.add('drivingcar');
-    //   return;
-    // }
+    }
   },
 
   mounted(){
   // Get all "navbar-burger" elements
    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-   if ($navbarBurgers.length > 0) {
+   if ($navbarBurgers.length > 0){
      $navbarBurgers.forEach( el => {
        el.addEventListener('click', () => {
          // Get the target from the "data-target" attribute
@@ -434,7 +438,7 @@ export default {
          $target.classList.toggle('is-active');
        });
      });
-   }
+    }
   }
 }
 
