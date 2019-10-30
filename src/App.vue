@@ -140,7 +140,7 @@
                 <textarea class="textarea" :disabled="!nextButton[activeIndex]" v-model="description"></textarea>
 
                 <div class="savebutton">
-                  <button class="button is-primary" :disabled="!nextButton[activeIndex]" v-on:click="onClickSaveButton">Opslaan</button>
+                  <button class="button is-primary" :disabled="!saveButtonIsDisabled" v-on:click="onClickSaveButton">Opslaan</button>
                 </div>
               </div>
             </div>
@@ -287,8 +287,13 @@ export default {
     },
 
     saveButtonIsDisabled(){
-      const kmEndIsBiggerThanKmstart = this.kmend >= this.kmstart;
-      return !(kmEndIsBiggerThanKmstart);
+      const kmEndIsBiggerThanKmstart = parseInt(this.kmend) >= parseInt(this.kmstart);
+      const zeroKilometers = this.kmend != 0 && this.kmstart != 0
+      console.log(kmEndIsBiggerThanKmstart);
+      console.log(this.kmstart);
+      console.log(this.kmend);
+      console.log(zeroKilometers);
+      return (kmEndIsBiggerThanKmstart && zeroKilometers);
     }
   },
 
