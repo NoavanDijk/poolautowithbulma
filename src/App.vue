@@ -63,7 +63,16 @@
             </header>
             <div class="card-content">
               <div class="content">
-                <p v-html="formatDateToString(item.startdate)"></p>
+                <div class="cardstartdate">
+                  <p v-html="formatDateToString(item.startdate)"></p>
+                </div>
+                <div class="dash">
+                  <p>|</p>
+                </div>
+                <div class="dash">
+                  <p v-html="formatDateToString(item.enddate)"></p>
+                </div>
+                <br />
                 <br />
                 <div class="iconcard" v-on:click="onDeleteReservation(item)">
                   <i class="fas fa-trash"></i>
@@ -288,11 +297,7 @@ export default {
 
     saveButtonIsDisabled(){
       const kmEndIsBiggerThanKmstart = parseInt(this.kmend) >= parseInt(this.kmstart);
-      const zeroKilometers = this.kmend != 0 && this.kmstart != 0
-      console.log(kmEndIsBiggerThanKmstart);
-      console.log(this.kmstart);
-      console.log(this.kmend);
-      console.log(zeroKilometers);
+      const zeroKilometers = this.kmend != 0 && this.kmstart != 0;
       return (kmEndIsBiggerThanKmstart && zeroKilometers);
     }
   },

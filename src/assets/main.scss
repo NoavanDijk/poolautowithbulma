@@ -19,7 +19,7 @@ $size-5: 1.1rem;
   width: 100%;
 }
 
-.homepicture{
+.homepicture {
   margin: 1em;
   width: 80%;
   flex-grow: 1;
@@ -28,7 +28,7 @@ $size-5: 1.1rem;
   align-items: center;
 }
 
-.addreservation{
+.addreservation {
   margin: 1em;
   cursor: pointer;
   max-width: 20%;
@@ -39,7 +39,7 @@ $size-5: 1.1rem;
   min-height: 221px;
 }
 
-.reservationcard{
+.reservationcard {
   max-width: 20%;
   width: 100%;
   display: flex;
@@ -50,53 +50,37 @@ $size-5: 1.1rem;
   margin-left: 0.1em;
 }
 
-.card-content{
+.card-content {
   padding: 1em;
 }
 
-.input{
+.input {
   margin-bottom: 1em;
   width: 50%
 }
 
-.input2{
+.input2 {
   width: 70%;
 }
 
-.fa-trash, .fa-edit{
-  font-size: 22px;
+.fa-trash {
+  font-size: 27px;
+  width: 100%;
   margin-left: 1em;
+  height: 1.5em;
 }
 
-.iconcard{
-  width: 30%;
-}
-
-.fa-plus-circle{
-  font-size: 50px;
+.iconcard {
   display: flex;
+  justify-content: flex-end;
+  width: 95%;
+}
+
+.tile {
   justify-content: center;
 }
 
-.boxinfo{
-  display: flex;
-}
-
-.datareservation{
-  justify-content: left;
-  flex-direction: column;
-}
-
-.infodata{
-  justify-content: right;
-  flex-direction: column;
-}
-
-.tile{
-  justify-content: center;
-}
-
-.container{
+.container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   background-color: white;
@@ -104,7 +88,7 @@ $size-5: 1.1rem;
   border: solid 1px #dbdbdb;
 }
 
-.containercards{
+.containercards {
   width: 85%;
   border-radius: 6px;
   display: flex;
@@ -115,20 +99,20 @@ $size-5: 1.1rem;
   scrollbar-width: thin;
 }
 
-.plus-line{
+.plus-line {
   stroke: #fff;
   fill: #fff;
 }
 
-.plus-bg{
+.plus-bg {
   fill: #ff0032;
 }
 
-#icon-plus{
+#icon-plus {
   width: 35%;
 }
 
-.plus{
+.plus {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -136,58 +120,68 @@ $size-5: 1.1rem;
   margin-top: 16%;
 }
 
-.reservatebutton{
+.reservatebutton {
   display: flex;
   justify-content: flex-end;
 }
 
-.nextbutton, .savebutton, .reservatebutton{
+.nextbutton, .savebutton, .reservatebutton {
   display: flex;
   justify-content: flex-end;
   margin-top: auto;
   padding-top: 0.5em;
 }
 
-.active{
+.active {
   box-shadow: 0 0 6px rgba(71,180,255,1);
 }
 
-.box{
+.box {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.kilometers, .zipcodes{
+.kilometers, .zipcodes {
   display: flex;
 }
 
-.textarea:not([rows]){
+.textarea:not([rows]) {
   min-height: 100px;
 }
 
-.stepindicator{
+.stepindicator {
   width: 62%;
   padding: 0;
 }
 
-.cardssection{
+.cardssection {
   padding: 1.5rem 1.5rem;
 }
 
-.poolauto, .poolautocard{
+.poolauto, .poolautocard {
   width: 5rem;
   margin: 0.4em;
 }
 
-.carstep1{
+.cardstartdate {
+  display: inline-flex;
+  margin-left: 0.15em;
+}
+
+.dash {
+  display: inline-flex;
+  margin-left: 0.3em;
+}
+
+.carstep1 {
   left: 36%;
   width: 100px;
   height: 100px;
   position: relative;
 }
 
-.drivingcar{
+.drivingcar {
   -webkit-animation-name: drivingcar; /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
   animation-name: drivingcar;
@@ -195,7 +189,7 @@ $size-5: 1.1rem;
   animation-fill-mode: forwards; /* Laat de auto staan op het einde */
 }
 
-.drivingcar2{
+.drivingcar2 {
   -webkit-animation-name: drivingcar2; /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
   animation-name: drivingcar2;
@@ -203,7 +197,7 @@ $size-5: 1.1rem;
   animation-fill-mode: forwards; /* Laat de auto staan op het einde */
 }
 
-@keyframes drivingcar{
+@keyframes drivingcar {
   0%   {left:140px;}
   100% {left:510px;}
 }
@@ -214,7 +208,7 @@ $size-5: 1.1rem;
   100% {left:510px;}
 }
 
-@keyframes drivingcar2{
+@keyframes drivingcar2 {
   0%   {left:510px;}
   100% {left:890px;}
 }
