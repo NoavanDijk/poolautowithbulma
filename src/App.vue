@@ -72,15 +72,15 @@
                 <div class="dash">
                   <p v-html="formatDateToString(item.enddate)"></p>
                 </div>
-                <br />
-                <br />
-                <div class="iconcard" v-on:click="onDeleteReservation(item)">
-                  <i class="fas fa-trash"></i>
-                </div>
+                <!-- <br /><br /><br /> -->
+
               </div>
             </div>
             <footer class="card-footer">
               <img src="./assets/images/poolauto.svg" alt="Poolauto" class="poolautocard">
+              <div class="iconcard" v-on:click="onDeleteReservation(item)">
+                <i class="fas fa-trash"></i>
+              </div>
             </footer>
           </div>
         </div>
@@ -88,7 +88,7 @@
     </section>
 
   <!-- First tile with date and time -->
-    <div class="tile is-ancestor">
+    <div class="tile is-ancestor tilescontainer">
       <div class="containertiles">
         <div class="tile is-vertical">
           <div class="tile">
@@ -159,9 +159,9 @@
     </div>
 
     <div class="section stepindicator" v-if="items[activeIndex]">
-      <ul class="steps is-medium has-content-centered">
+      <ul class="steps is-medium has-content-centered has-gaps">
         <li class="steps-segment" v-bind:class="{'is-active': stepIndicator[activeIndex]}">
-          <span class="steps-marker is-primary">1</span>
+          <span class="steps-marker is-primary" v-bind:class="{'is-hollow': stepIndicatorHollow[activeIndex]}"></span>
           <div class="steps-content">
             <p>Stap 1</p>
               <div class="carstep1" v-bind:class="{'drivingcar': drivingCar[activeIndex], 'drivingcar2': drivingCar2[activeIndex]}">
@@ -170,13 +170,13 @@
           </div>
         </li>
         <li class="steps-segment" v-bind:class="{'is-active': stepIndicator1[activeIndex]}">
-          <span class="steps-marker is-primary">2</span>
+          <span class="steps-marker is-primary" v-bind:class="{'is-hollow': stepIndicatorHollow1[activeIndex]}"></span>
           <div class="steps-content">
             <p>Stap 2</p>
           </div>
         </li>
         <li class="steps-segment" v-bind:class="{'is-active': stepIndicator2[activeIndex]}">
-          <span class="steps-marker is-primary">3</span>
+          <span class="steps-marker is-primary" v-bind:class="{'is-hollow': stepIndicatorHollow2[activeIndex]}"></span>
           <div class="steps-content">
             <p>Stap 3</p>
           </div>
@@ -212,33 +212,20 @@ export default {
     return {
       activeIndex: -1,
 
-      stepIndicator: [
+      stepIndicator: [],
+      stepIndicator1: [],
+      stepIndicator2: [],
 
-      ],
+      stepIndicatorHollow: [],
+      stepIndicatorHollow1: [],
+      stepIndicatorHollow2: [],
 
-      stepIndicator1: [
+      drivingCar: [],
+      drivingCar2: [],
 
-      ],
+      reservateButton: [],
 
-      stepIndicator2: [
-
-      ],
-
-      drivingCar: [
-
-      ],
-
-      drivingCar2: [
-
-      ],
-
-      reservateButton: [
-
-      ],
-
-      nextButton: [
-
-      ],
+      nextButton: [],
 
       // Editable Reserve Object
       startdate: '',
@@ -255,9 +242,7 @@ export default {
 
       activeModalId: '',
 
-      items: [
-
-      ]
+      items: []
     };
   },
 
@@ -353,6 +338,10 @@ export default {
       this.stepIndicator1.splice(this.activeIndex, 1, true);
       this.stepIndicator2.splice(this.activeIndex, 1, false);
 
+      this.stepIndicatorHollow.splice(this.activeIndex, 1, false);
+      this.stepIndicatorHollow1.splice(this.activeIndex, 1, false);
+      this.stepIndicatorHollow2.splice(this.activeIndex, 1, true);
+
       var movingcar = document.querySelector(".carstep1");
       movingcar.classList.add('drivingcar');
 
@@ -392,6 +381,10 @@ export default {
       this.stepIndicator1.push(false);
       this.stepIndicator2.push(false);
 
+      this.stepIndicatorHollow.push(false);
+      this.stepIndicatorHollow1.push(true);
+      this.stepIndicatorHollow2.push(true);
+
       this.drivingCar.push(false);
       this.drivingCar2.push(false);
       return;
@@ -403,6 +396,10 @@ export default {
       this.stepIndicator.splice(this.activeIndex, 1, false);
       this.stepIndicator1.splice(this.activeIndex, 1, false);
       this.stepIndicator2.splice(this.activeIndex, 1, true);
+
+      this.stepIndicatorHollow.splice(this.activeIndex, 1, false);
+      this.stepIndicatorHollow1.splice(this.activeIndex, 1, false);
+      this.stepIndicatorHollow2.splice(this.activeIndex, 1, false);
 
       var movingcar = document.querySelector(".carstep1");
       movingcar.classList.add('drivingcar2');
